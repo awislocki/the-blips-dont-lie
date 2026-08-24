@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Card File</title>
+<meta name="description" content="Live numbers pulled from the federal data drawers - every figure queried from a government API, every cross-dataset claim independently verified before publication.">
+<meta property="og:title" content="The Card File">
+<meta property="og:description" content="Verified data stories pulled live from CFPB, Census, NASA, USGS, Treasury, FDIC, and more.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Card File">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Card File">
+<meta name="twitter:description" content="Verified data stories pulled live from government APIs.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128451;</text></svg>"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F7F5EF;
+    --surface: #FFFFFF;
+    --ink: #23271F;
+    --muted: #6A705F;
+    --line: #DFDCD0;
+    --grid: #E9E6DA;
+    --accent: #256B43;
+    --chart: #2F7D4F;
+    --gold: #8A6D23;
+    --code-bg: #EFECE2;
+    --s1: #2A78D6;
+    --s2: #EB6834;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12150F;
+      --surface: #1A1E15;
+      --ink: #E8E9E0;
+      --muted: #A2A791;
+      --line: #2E3327;
+      --grid: #262B20;
+      --accent: #7CC79C;
+      --chart: #199E70;
+      --gold: #CBA85C;
+      --code-bg: #22271C;
+      --s1: #3987E5;
+      --s2: #D95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150F;
+    --surface: #1A1E15;
+    --ink: #E8E9E0;
+    --muted: #A2A791;
+    --line: #2E3327;
+    --grid: #262B20;
+    --accent: #7CC79C;
+    --chart: #199E70;
+    --gold: #CBA85C;
+    --code-bg: #22271C;
+    --s1: #3987E5;
+    --s2: #D95926;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Public Sans", "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.55rem 1.05rem;
+  }
+  .topbar .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wrap {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.2rem 1.05rem 4.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.8rem;
+  }
+  h1, h2 {
+    font-family: "Fraunces", Georgia, serif;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h1 { font-size: clamp(2.5rem, 9vw, 4rem); font-weight: 700; letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.35rem, 4.5vw, 1.7rem); font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  article { display: flex; flex-direction: column; gap: 1rem; border-top: 3px double var(--line); padding-top: 1.9rem; scroll-margin-top: 4rem; }
+
+  .eyebrow {
+    font-family: "Spline Sans Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .eyebrow .dim { color: var(--muted); }
+
+  .cover { display: flex; flex-direction: column; gap: 1rem; }
+  .tagline { font-size: 1.1rem; line-height: 1.55; max-width: 36rem; }
+  .meta-row { font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+  .catalog-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .catalog-strip { grid-template-columns: repeat(4, 1fr); } }
+  .cs { background: var(--surface); padding: 0.75rem 0.9rem; display: flex; flex-direction: column; gap: 0.1rem; }
+  .cs .n { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+  .cs .l { font-family: "Spline Sans Mono", monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  .toc { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .toc .tlabel { font-family: "Spline Sans Mono", monospace; font-size: 0.66rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
+  .toc .tlabel:first-child { margin-top: 0; }
+  .toc a { text-decoration: none; font-size: 0.94rem; line-height: 1.4; }
+  .toc a:hover { text-decoration: underline; }
+
+  .hero-n {
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .hero-cap { font-family: "Spline Sans Mono", monospace; font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.9rem 0.7rem 0.5rem;
+    overflow-x: auto;
+  }
+  .chart-box svg { display: block; width: 100%; height: auto; min-width: 480px; }
+  figcaption { font-size: 0.8rem; color: var(--muted); }
+  .chart-title { font-weight: 600; font-size: 0.92rem; }
+
+  svg text { font-family: "Spline Sans Mono", Consolas, monospace; font-size: 10.5px; fill: var(--muted); }
+  svg .dlabel { fill: var(--ink); font-weight: 500; }
+  svg .gline { stroke: var(--grid); stroke-width: 1; }
+  svg .axis { stroke: var(--line); stroke-width: 1; }
+  svg .bar { fill: var(--chart); }
+  svg .bar.dim { opacity: 0.55; }
+  svg .series-line { fill: none; stroke: var(--chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  svg .l1 { stroke: var(--s1); }
+  svg .l2 { stroke: var(--s2); }
+  svg .d1 { fill: var(--s1); }
+  svg .d2 { fill: var(--s2); }
+  svg .mf { fill: var(--s1); }
+  svg .mn { fill: var(--s2); }
+  svg .anno-dot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; }
+  svg .sdot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; }
+  svg .hit { fill: transparent; }
+  svg .cross { stroke: var(--line); stroke-width: 1; opacity: 0; }
+  svg .hoverdot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; opacity: 0; }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; align-items: center; font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--muted); }
+  .lg { display: inline-flex; align-items: center; gap: 0.45em; }
+  .lg .sw { width: 16px; height: 3px; border-radius: 2px; flex: none; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .chip {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.26rem 0.75rem;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .chip b { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .swatch { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line); flex: none; }
+
+  ul.facts { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  ul.facts li::marker { color: var(--gold); }
+  ul.facts b { font-variant-numeric: tabular-nums; }
+
+  .caveat {
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.74rem;
+    color: var(--muted);
+    border-left: 2px solid var(--line);
+    padding-left: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .hbars { display: flex; flex-direction: column; gap: 0.42rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1rem; }
+  .hb { display: grid; grid-template-columns: 5.9rem 1fr 4.6rem; gap: 0.55rem; align-items: center; }
+  @media (min-width: 640px) { .hb { grid-template-columns: 7.2rem 1fr 6.4rem; gap: 0.7rem; } }
+  .hb .name { font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hb .track { height: 12px; border-radius: 0 3px 3px 0; background: var(--chart); min-width: 2px; }
+  .hb .track.avg { opacity: 0.45; }
+  .hb .val { font-family: "Spline Sans Mono", monospace; font-size: 0.7rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .ladder { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+  .lrow { display: grid; grid-template-columns: 3.6rem 4.6rem 1fr; gap: 0.6rem; align-items: baseline; padding: 0.6rem 1rem; border-bottom: 1px solid var(--grid); }
+  @media (min-width: 640px) { .lrow { grid-template-columns: 4.5rem 7rem 1fr; gap: 1rem; padding: 0.65rem 1.2rem; } }
+  .lrow:last-child { border-bottom: none; }
+  .lrow .lm { font-family: "Spline Sans Mono", monospace; font-size: 0.76rem; color: var(--gold); }
+  .lrow .ln { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+  .lrow .lc { font-size: 0.82rem; color: var(--muted); }
+
+  details { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  details summary { cursor: pointer; padding: 0.5rem 0.9rem; font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); }
+  details[open] summary { border-bottom: 1px solid var(--line); }
+  details .t-in { padding: 0.55rem 0.9rem 0.85rem; overflow-x: auto; }
+  table { border-collapse: collapse; font-size: 0.78rem; min-width: 300px; }
+  th, td { text-align: right; padding: 0.26rem 0.8rem 0.26rem 0; font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-family: "Spline Sans Mono", monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line); }
+
+  .share-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .share-label { font-family: "Spline Sans Mono", monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-right: 0.2rem; }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.42rem 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .share-btn.fb { background: #1877F2; border-color: #1877F2; color: #FFFFFF; }
+  .share-btn svg { width: 14px; height: 14px; fill: currentColor; display: block; }
+
+  .method { font-size: 0.88rem; color: var(--muted); }
+  .method code { font-family: "Spline Sans Mono", monospace; font-size: 0.82em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 3px; color: var(--ink); }
+
+  footer { border-top: 3px double var(--line); padding-top: 1.3rem; font-size: 0.82rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.8rem; }
+  footer ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.28rem; }
+
+  #tip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.12s;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--bg);
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.76rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) { #tip, #toast { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="#top">🗃️ The Card File</a>
+  <button class="share-btn fb" data-share="fb" data-target="top" type="button" aria-label="Share this site on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Share</button>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="cover">
+    <p class="eyebrow">An occasional data publication · <span class="dim">updated 2026-08-24</span></p>
+    <h1>The Card File</h1>
+    <p class="tagline">Live numbers pulled from the federal data drawers — every figure queried from a government API, and every cross-dataset claim recomputed by an independent verifier before it appears here.</p>
+    <div class="meta-row"><span>source: catalog.data.gov + 12 agency APIs</span><span>no estimates, no memory — fetched values only</span></div>
+    <div class="catalog-strip">
+      <div class="cs"><span class="n">552,271</span><span class="l">datasets in catalog</span></div>
+      <div class="cs"><span class="n">12</span><span class="l">APIs queried live</span></div>
+      <div class="cs"><span class="n">14</span><span class="l">stories so far</span></div>
+      <div class="cs"><span class="n">2×</span><span class="l">errors caught by verifiers</span></div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="tlabel">Crossing the streams — verified cross-inferences</p>
+    <a href="#r3-georgia">The complaint machine has a home address, and it's Georgia</a>
+    <a href="#r3-banks">Size-adjust the banks and the villain list flips upside down</a>
+    <a href="#r3-witnesses">The map of falling stars is really a map of who was watching</a>
+    <a href="#r3-darkness">We tested whether darkness causes the 5 PM cyclist peak. It doesn't.</a>
+    <a href="#r3-ev-income">EV adoption is an income story — r = 0.75 — except where it's a ferry story</a>
+    <a href="#r3-debt">Your share of the national debt, computed to the cent</a>
+    <p class="tlabel">Single-dataset dispatches</p>
+    <a href="#r2-border">The border's busiest year was 1999</a>
+    <a href="#r2-crashes">Reported crashes fell by two-thirds. Deaths didn't fall at all.</a>
+    <a href="#r2-meteorites">Half of everything we've caught falling from space was picked up in Antarctica</a>
+    <a href="#r2-quakes">Earth had 2,018 magnitude-5 earthquakes this year. That's normal.</a>
+    <a href="#r1-cfpb">The federal complaint box has become a machine</a>
+    <a href="#r1-lifeexp">1918 erased eleven years of life expectancy in twelve months</a>
+    <a href="#r1-ev">Watching a technology arrive, one license plate at a time</a>
+    <a href="#r1-squirrels">The government knows how many squirrels moaned at it</a>
+  </nav>
+
+  <article id="r3-georgia">
+    <p class="eyebrow">Cross-inference · <span class="dim">CFPB × Census</span></p>
+    <h2>The complaint machine has a home address, and it's Georgia</h2>
+    <p>Divide 2025's 5.44M consumer complaints by each state's population and the geography snaps into focus: <b>Georgia files 38.2 CFPB complaints per 1,000 residents</b> — 2.4× the national rate of 15.9, and 22× Vermont's 1.7. The post-2019 explosion wasn't evenly national either: while the U.S. grew 19.6×, <b>Mississippi grew 58.7×</b>, Alabama 35.8×, Louisiana 31.3× — the credit-repair complaint wave has a regional center of gravity in the South.</p>
+    <figure>
+      <p class="chart-title">CFPB complaints per 1,000 residents, 2025 — top 10 states</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">Georgia</span><span class="track" style="width:100%"></span><span class="val">38.2</span></div>
+        <div class="hb"><span class="name">Mississippi</span><span class="track" style="width:90.3%"></span><span class="val">34.5</span></div>
+        <div class="hb"><span class="name">Florida</span><span class="track" style="width:88.6%"></span><span class="val">33.9</span></div>
+        <div class="hb"><span class="name">Louisiana</span><span class="track" style="width:73.9%"></span><span class="val">28.2</span></div>
+        <div class="hb"><span class="name">Alabama</span><span class="track" style="width:73.6%"></span><span class="val">28.1</span></div>
+        <div class="hb"><span class="name">Texas</span><span class="track" style="width:66.1%"></span><span class="val">25.2</span></div>
+        <div class="hb"><span class="name">D.C.</span><span class="track" style="width:64%"></span><span class="val">24.4</span></div>
+        <div class="hb"><span class="name">S. Carolina</span><span class="track" style="width:60.3%"></span><span class="val">23.0</span></div>
+        <div class="hb"><span class="name">Delaware</span><span class="track" style="width:58.9%"></span><span class="val">22.5</span></div>
+        <div class="hb"><span class="name">Maryland</span><span class="track" style="width:55.5%"></span><span class="val">21.2</span></div>
+        <div class="hb"><span class="name">US average</span><span class="track avg" style="width:41.6%"></span><span class="val">15.9</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>Quietest states: Vermont 1.7, South Dakota 1.8, Montana 1.9 per 1,000 — the Georgia-to-Vermont spread is <b>22×</b>.</li>
+      <li>Fastest growers since 2019 (states with ≥500 complaints then): <b>MS 58.7×, AL 35.8×, LA 31.3×, TX 30.8×, AR 27.0×</b> — though the surge wasn't purely Southern (Illinois grew 23.9×).</li>
+      <li>State buckets cover 99.85% of all 2025 complaints, so this isn't a sampling artifact.</li>
+    </ul>
+    <p class="caveat">Complaints are tagged by the consumer's self-reported state; population denominator is the July 2024 Census estimate (no 2025 vintage exists yet). Verified against live re-queries.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r3-banks">
+    <p class="eyebrow">Cross-inference · <span class="dim">CFPB × FDIC</span></p>
+    <h2>Size-adjust the banks and the villain list flips upside down</h2>
+    <p>Raw counts crowned Capital One the most-complained-about bank (71,613 complaints, 2023–2025). But banks aren't the same size. Divide each bank's complaints by its FDIC-reported deposits and the card issuers sweep the podium: <b>Synchrony logs 360 complaints per $1B of deposits — nearly 20× PNC's 18</b> — while the megabanks everyone loves to hate land at the bottom of the table.</p>
+    <figure>
+      <p class="chart-title">Complaints per $1B of deposits, 2023–2025</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">Synchrony</span><span class="track" style="width:100%"></span><span class="val">360.3</span></div>
+        <div class="hb"><span class="name">Discover</span><span class="track" style="width:50.4%"></span><span class="val">181.7</span></div>
+        <div class="hb"><span class="name">Capital One</span><span class="track" style="width:38.2%"></span><span class="val">137.5</span></div>
+        <div class="hb"><span class="name">TD Bank</span><span class="track" style="width:12.9%"></span><span class="val">46.3</span></div>
+        <div class="hb"><span class="name">Wells Fargo</span><span class="track" style="width:10.1%"></span><span class="val">36.5</span></div>
+        <div class="hb"><span class="name">Truist</span><span class="track" style="width:8.5%"></span><span class="val">30.6</span></div>
+        <div class="hb"><span class="name">Citibank</span><span class="track" style="width:8.2%"></span><span class="val">29.5</span></div>
+        <div class="hb"><span class="name">U.S. Bank</span><span class="track" style="width:7.4%"></span><span class="val">26.6</span></div>
+        <div class="hb"><span class="name">Goldman</span><span class="track" style="width:7.1%"></span><span class="val">25.6</span></div>
+        <div class="hb"><span class="name">Bank of Am.</span><span class="track" style="width:6.2%"></span><span class="val">22.5</span></div>
+        <div class="hb"><span class="name">JPMorgan</span><span class="track" style="width:5.9%"></span><span class="val">21.3</span></div>
+        <div class="hb"><span class="name">PNC</span><span class="track" style="width:5.1%"></span><span class="val">18.4</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>Rank flips: Synchrony #6 raw → <b>#1 adjusted</b>; Discover #7 → #2; JPMorgan #2 raw → #11 adjusted; Bank of America #4 raw → #10.</li>
+      <li>The three credit-card monolines take the top three; the four biggest full-service banks take four of the bottom five.</li>
+      <li>Every headline number was re-fetched live by the verifier — Synchrony's 30,915 complaints and $85.8B deposits reproduced exactly.</li>
+    </ul>
+    <p class="caveat">Honest limits: complaint buckets are holding-company-wide while deposits are one bank charter; card-focused banks fund with few deposits relative to their cardholder base, so "per deposit" partly measures business mix. Discover's charter is now inactive (merged into Capital One, 2025); its figures are the final pre-merger snapshot.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r3-witnesses">
+    <p class="eyebrow">Cross-inference · <span class="dim">NASA × human geography</span></p>
+    <h2>The map of falling stars is really a map of who was watching</h2>
+    <p>Split the meteorite catalog by how each rock entered it and you get two opposite planets. <b>86.6% of witnessed falls landed between 0° and 60°N</b> — the band where most humans live. <b>71.1% of found meteorites sit below 60°S</b>, in Antarctica, where nobody lives at all. Median latitude of a witnessed fall: <b>+36°</b> (roughly Nashville). Median latitude of a find: <b>−73°</b> (deep Antarctica). Same sky, same rain of rocks — sorted entirely by who was looking, and where searching works.</p>
+    <figure>
+      <p class="chart-title">Where meteorites enter the record, by latitude band</p>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Witnessed falls (% of 1,096)</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Found later (% of 31,091)</span>
+      </div>
+      <div class="chart-box">
+        <svg viewBox="0 0 640 190" role="img" aria-label="Mirrored bar chart by latitude band. Witnessed falls concentrate in 30 to 60 degrees north at 61.8 percent. Found meteorites concentrate in 60 to 90 degrees south at 71.1 percent.">
+          <text x="269.9" y="28.5" text-anchor="end">1.3%</text><rect class="mf" x="275.9" y="18" width="4.1" height="12" rx="2"></rect>
+          <rect class="mn" x="360" y="18" width="0.3" height="12"></rect><text x="366.3" y="28.5">0.1%</text>
+          <text x="81.2" y="56.5" text-anchor="end">61.8%</text><rect class="mf" x="87.2" y="46" width="192.8" height="12" rx="2"></rect>
+          <rect class="mn" x="360" y="46" width="20" height="12" rx="2"></rect><text x="386" y="56.5">6.4%</text>
+          <text x="196.6" y="84.5" text-anchor="end">24.8%</text><rect class="mf" x="202.6" y="74" width="77.4" height="12" rx="2"></rect>
+          <rect class="mn" x="360" y="74" width="57.7" height="12" rx="2"></rect><text x="423.7" y="84.5">18.5%</text>
+          <text x="246.9" y="112.5" text-anchor="end">8.7%</text><rect class="mf" x="252.9" y="102" width="27.1" height="12" rx="2"></rect>
+          <rect class="mn" x="360" y="102" width="6.2" height="12" rx="2"></rect><text x="372.2" y="112.5">2.0%</text>
+          <text x="263.1" y="140.5" text-anchor="end">3.5%</text><rect class="mf" x="269.1" y="130" width="10.9" height="12" rx="2"></rect>
+          <rect class="mn" x="360" y="130" width="5.6" height="12" rx="2"></rect><text x="371.6" y="140.5">1.8%</text>
+          <text x="274" y="168.5" text-anchor="end">0%</text>
+          <rect class="mn" x="360" y="158" width="221.8" height="12" rx="2"></rect><text class="dlabel" x="587.8" y="168.5">71.1%</text>
+          <text x="320" y="28.5" text-anchor="middle">60–90°N</text>
+          <text x="320" y="56.5" text-anchor="middle">30–60°N</text>
+          <text x="320" y="84.5" text-anchor="middle">0–30°N</text>
+          <text x="320" y="112.5" text-anchor="middle">0–30°S</text>
+          <text x="320" y="140.5" text-anchor="middle">30–60°S</text>
+          <text x="320" y="168.5" text-anchor="middle">60–90°S</text>
+        </svg>
+      </div>
+      <figcaption>1,096 witnessed falls and 31,091 finds with valid coordinates; 13,529 rows without usable coordinates excluded. All 12 band counts reproduced exactly by an independent re-parse.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>Northern Hemisphere share: <b>87.9% of falls</b> vs just <b>25.1% of finds</b>.</li>
+      <li>A "Fell" record needs an eyewitness; a "Found" record needs a searchable surface. Humans supply the first, Antarctic blue ice the second.</li>
+      <li>Caveat worth keeping: witnessed falls also skew toward regions with long written-record traditions, not raw population alone.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r3-darkness">
+    <p class="eyebrow">Cross-inference · <span class="dim">NYPD × seasonal daylight</span></p>
+    <h2>We tested whether darkness causes the 5 PM cyclist peak. It doesn't.</h2>
+    <p>A good hypothesis, killed by data — the fun kind. If darkness drove the evening injury peak, winter (sunset ~4:45 PM) should concentrate injuries into the dark 5–7 PM commute while summer spreads them across its long bright evenings. The seasons refuse to cooperate: <b>both peak at exactly 18:00</b>, winter's 5–7 PM share beats summer's by only 1.2 points (17.5% vs 16.3%), and the 7–10 PM shares are <b>identical at 19.5%</b>. The curves are near-twins despite summer logging 2.5× the injuries.</p>
+    <figure>
+      <p class="chart-title">Share of each season's cyclist injuries, by hour</p>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Winter (Dec–Feb, 9,137 injuries)</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Summer (Jun–Aug, 23,207)</span>
+      </div>
+      <div class="chart-box">
+        <svg id="ss-svg" viewBox="0 0 640 240" role="img" aria-label="Two overlaid lines showing the percent of seasonal cyclist injuries by hour for winter and summer. The curves are nearly identical, both peaking at 6 PM near 8 to 9 percent.">
+          <line class="gline" x1="46" y1="162" x2="614" y2="162"></line>
+          <line class="gline" x1="46" y1="118" x2="614" y2="118"></line>
+          <line class="gline" x1="46" y1="74" x2="614" y2="74"></line>
+          <line class="gline" x1="46" y1="30" x2="614" y2="30"></line>
+          <text x="40" y="165.5" text-anchor="end">2.5%</text>
+          <text x="40" y="121.5" text-anchor="end">5%</text>
+          <text x="40" y="77.5" text-anchor="end">7.5%</text>
+          <text x="40" y="33.5" text-anchor="end">10%</text>
+          <polyline class="series-line l1" points="46,156.7 70.7,183.1 95.4,191.9 120.1,195.4 144.8,193.7 169.5,190.2 194.2,174.3 218.9,169 243.6,140.9 268.3,144.4 293,147.9 317.7,132.1 342.3,107.4 367,105.7 391.7,96.9 416.4,95.1 441.1,93.4 465.8,56.4 490.5,47.6 515.2,65.2 539.9,86.3 564.6,123.3 589.3,132.1 614,155"></polyline>
+          <polyline class="series-line l2" points="46,146.2 70.7,179.6 95.4,186.6 120.1,191.9 144.8,195.4 169.5,193.7 194.2,184.9 218.9,167.3 243.6,142.6 268.3,139.1 293,144.4 317.7,130.3 342.3,121.5 367,111 391.7,100.4 416.4,95.1 441.1,75.8 465.8,63.4 490.5,61.7 515.2,74 539.9,95.1 564.6,105.7 589.3,130.3 614,149.7"></polyline>
+          <circle class="anno-dot d1" cx="490.5" cy="47.6" r="4"></circle>
+          <text class="dlabel" x="490.5" y="24" text-anchor="middle">both peak 18:00</text>
+          <line class="axis" x1="46" y1="206" x2="614" y2="206"></line>
+          <text x="46" y="224" text-anchor="middle">12am</text>
+          <text x="194.2" y="224" text-anchor="middle">6am</text>
+          <text x="342.3" y="224" text-anchor="middle">noon</text>
+          <text x="490.5" y="224" text-anchor="middle">6pm</text>
+          <text x="614" y="224" text-anchor="middle">11pm</text>
+          <line id="ss-cross" class="cross" x1="0" y1="30" x2="0" y2="206"></line>
+          <circle id="ss-dot1" class="hoverdot d1" r="4"></circle>
+          <circle id="ss-dot2" class="hoverdot d2" r="4"></circle>
+          <rect id="ss-hit" class="hit" x="46" y="30" width="568" height="176"></rect>
+        </svg>
+      </div>
+      <figcaption>All years combined (2012–2026). Summer's only real surplus is after 9 PM (13.3% vs 11.8%) — warm-night riding, not commute darkness.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>The 5–6 PM peak is <b>commuter exposure</b>: the hourly shape barely moves between a season dark at 4:45 PM and one light until 8:30 PM.</li>
+      <li>The verifier reproduced all 48 hourly bins exactly — and noted that because shares sum to 100%, summer's late-night riding mechanically depresses its evening shares, making the tiny "darkness effect" smaller still.</li>
+      <li>Fair caveat: winter riders are a hardier, commute-heavy population, so the test isn't perfectly clean — but a real darkness effect should still have shifted the winter curve, and it didn't.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r3-ev-income">
+    <p class="eyebrow">Cross-inference · <span class="dim">WA EV registry × Census income</span></p>
+    <h2>EV adoption is an income story — r = 0.75 — except where it's a ferry story</h2>
+    <p>Join Washington's 39 counties' EV counts to their median household incomes and the correlation is strong: <b>Pearson r = 0.75</b> (income explains ~56% of the variance in EVs per 1,000 residents). Then the residuals get interesting: the #1 EV county isn't rich-tech King — it's <b>San Juan, a mid-income archipelago</b> where every gallon of gas arrives by ferry.</p>
+    <figure>
+      <p class="chart-title">39 counties: median household income vs EVs per 1,000 residents</p>
+      <div class="chart-box">
+        <svg id="sc-svg" viewBox="0 0 640 260" role="img" aria-label="Scatter plot of Washington counties. EVs per 1,000 residents rises with median household income, correlation 0.75. San Juan County is a high outlier at moderate income; King County is highest income and second-highest adoption.">
+          <line class="gline" x1="46" y1="156" x2="614" y2="156"></line>
+          <line class="gline" x1="46" y1="96" x2="614" y2="96"></line>
+          <line class="gline" x1="46" y1="36" x2="614" y2="36"></line>
+          <text x="40" y="159.5" text-anchor="end">25</text>
+          <text x="40" y="99.5" text-anchor="end">50</text>
+          <text x="40" y="39.5" text-anchor="end">75</text>
+          <text class="dlabel" x="60" y="52">r = 0.75</text>
+          <g id="sc-dots"></g>
+          <text class="dlabel" x="301.1" y="32" text-anchor="middle">San Juan</text>
+          <text class="dlabel" x="570" y="62" text-anchor="end">King</text>
+          <text class="dlabel" x="122" y="219">Garfield</text>
+          <line class="axis" x1="46" y1="216" x2="614" y2="216"></line>
+          <text x="86.6" y="234" text-anchor="middle">$60k</text>
+          <text x="248.9" y="234" text-anchor="middle">$80k</text>
+          <text x="411.1" y="234" text-anchor="middle">$100k</text>
+          <text x="573.4" y="234" text-anchor="middle">$120k</text>
+        </svg>
+      </div>
+      <figcaption>Income: SAIPE 2023. Population: Vintage 2024. EVs: live registry snapshot (BEVs + plug-in hybrids). Unweighted correlation across counties.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>Top of the table: San Juan <b>72.6 EVs per 1,000</b> ($86k income), King 60.7 ($121k), Jefferson 47.7 ($78k). Bottom: Garfield <b>3.3</b> ($63k) — a 21.8× spread.</li>
+      <li>King County alone holds <b>141,971 of 293,432</b> WA-registered EVs — 48.4%. (The pull agent first wrote "45% of ~318k" from memory; the verifier caught it.)</li>
+      <li>The outliers argue income isn't destiny: San Juan over-adopts for its income; Whitman under-indexes partly because a college town's "low income" is a student artifact.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r3-debt">
+    <p class="eyebrow">Cross-inference · <span class="dim">Treasury × Census</span></p>
+    <h2>Your share of the national debt, computed to the cent</h2>
+    <div>
+      <div class="hero-n">$117,646.01</div>
+      <p class="hero-cap">gross federal debt per U.S. resident · debt as of 2026-08-19</p>
+    </div>
+    <p>Treasury publishes the debt to the literal penny — <b>$40,012,700,535,679.44</b> — and Census publishes the headcount. Division does the rest. In January 2000 your share was <b>$20,451.01</b>; it has multiplied <b>5.75×</b> since, because the debt grew 6.95× while the population grew only 1.21×. At the current 3.447% average rate on interest-bearing debt, the implied interest on your share runs about <b>$4,055 a year — $338 a month</b>, roughly a car payment you didn't sign for.</p>
+    <div class="chips">
+      <span class="chip">debt <b>$40.01T</b> · 2026-08-19</span>
+      <span class="chip">per person 2000 <b>$20,451</b></span>
+      <span class="chip">growth <b>5.75×</b></span>
+      <span class="chip">avg rate <b>3.447%</b></span>
+      <span class="chip">interest/person <b>$4,055/yr</b></span>
+    </div>
+    <p class="caveat">Gross debt includes intragovernmental holdings; per-person debt held by the public would be materially lower. Population is the July 2024 estimate. Verified to the cent against live re-queries.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r2-border">
+    <p class="eyebrow">Dispatch · <span class="dim">BTS · Border Crossing Entry Data, 1996–present</span></p>
+    <h2>The border's busiest year was 1999</h2>
+    <p>Every person, truck, bus, and train entering the U.S. by land since 1996, monthly, port by port — 275,901 rows through July 2026. The surprise isn't the pandemic dip. It's that people-crossings peaked at <b>387.7 million in 1999</b> and had already fallen 38% before COVID existed. Freight never got the memo: index both to 1996 and the lines tear apart.</p>
+    <figure>
+      <p class="chart-title">Land crossings into the U.S., indexed to 1996 = 100</p>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>People (passengers + pedestrians)</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Trucks</span>
+      </div>
+      <div class="chart-box">
+        <svg id="bc-svg" viewBox="0 0 640 240" role="img" aria-label="Two indexed lines from 1996 to 2025. People crossings fall from 100 to a low of 37 in 2020 and recover only to 70. Truck crossings rise unevenly to 152 by 2024.">
+          <line class="gline" x1="46" y1="151" x2="614" y2="151"></line>
+          <line class="gline" x1="46" y1="96" x2="614" y2="96" stroke-dasharray="4 3"></line>
+          <line class="gline" x1="46" y1="41" x2="614" y2="41"></line>
+          <text x="40" y="154.5" text-anchor="end">50</text>
+          <text x="40" y="99.5" text-anchor="end">100</text>
+          <text x="40" y="44.5" text-anchor="end">150</text>
+          <text x="52" y="90">1996 = 100</text>
+          <polyline class="series-line l1" points="46,96 65.6,80.1 85.2,77.1 104.8,69.9 124.3,70.4 143.9,85.1 163.5,90.9 183.1,96 202.7,97 222.3,99.9 241.9,102.1 261.4,107.6 281,112 300.6,121.3 320.2,125.9 339.8,130.2 359.4,127.3 379,124.7 398.6,123.2 418.1,123.1 437.7,122.6 457.3,121.5 476.9,119.3 496.5,121.1 516.1,165 535.7,159.5 555.2,138 574.8,129.1 594.4,126 614,129.1"></polyline>
+          <polyline class="series-line l2" points="46,96 65.6,85.5 85.2,76.6 104.8,64.5 124.3,59.4 143.9,65.6 163.5,62.3 183.1,67 202.7,61.5 222.3,60.8 241.9,61.5 261.4,62.1 281,69.7 300.6,88.1 320.2,77 339.8,74.8 359.4,70.1 379,68.7 398.6,63.9 418.1,62.5 437.7,58.1 457.3,55.5 476.9,52.2 496.5,52.5 516.1,59.3 535.7,47.4 555.2,44.5 574.8,42.8 594.4,39.2 614,43.2"></polyline>
+          <circle class="anno-dot d1" cx="614" cy="129.1" r="4"></circle>
+          <circle class="anno-dot d2" cx="614" cy="43.2" r="4"></circle>
+          <text class="dlabel" x="610" y="147" text-anchor="end">People · 70</text>
+          <text class="dlabel" x="610" y="34" text-anchor="end">Trucks · 148</text>
+          <line class="axis" x1="46" y1="206" x2="614" y2="206"></line>
+          <text x="46" y="224" text-anchor="middle">1996</text>
+          <text x="124.3" y="224" text-anchor="middle">2000</text>
+          <text x="222.3" y="224" text-anchor="middle">2005</text>
+          <text x="320.2" y="224" text-anchor="middle">2010</text>
+          <text x="418.1" y="224" text-anchor="middle">2015</text>
+          <text x="516.1" y="224" text-anchor="middle">2020</text>
+          <text x="614" y="224" text-anchor="middle">2025</text>
+          <line id="bc-cross" class="cross" x1="0" y1="30" x2="0" y2="206"></line>
+          <circle id="bc-dot1" class="hoverdot d1" r="4"></circle>
+          <circle id="bc-dot2" class="hoverdot d2" r="4"></circle>
+          <rect id="bc-hit" class="hit" x="46" y="30" width="568" height="176"></rect>
+        </svg>
+      </div>
+      <figcaption>People = personal-vehicle, bus, and train passengers plus pedestrians. 2026 is partial and omitted.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>In 2020, people-crossings collapsed <b>52%</b>; trucks dipped <b>4.5%</b>. Borders close to people, not to freight — 2024 set an all-time truck record (13.17M).</li>
+      <li><b>San Ysidro, CA has logged 1.04 billion people since 1996</b> — one San Diego crossing has admitted more people than the population of Europe.</li>
+      <li>Pedestrian crossings are a Mexican-border phenomenon almost entirely: <b>1.31 billion</b> on foot from Mexico vs 14.6 million from Canada — 90:1.</li>
+      <li>2024's people-crossings (227.8M) were back to 94% of 2019 — but still just <b>59% of the 1999 peak</b>. The long decline started with 9/11-era documentation rules, not the pandemic.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r2-crashes">
+    <p class="eyebrow">Dispatch · <span class="dim">NYC Open Data · Motor Vehicle Collisions, 2.27M crashes</span></p>
+    <h2>Reported crashes fell by two-thirds. Deaths didn't fall at all.</h2>
+    <p>New York City logs every police-reported crash — 2,269,187 since mid-2012. Reported crashes peaked at <b>231,564 in 2018</b> and have fallen every year since, to 85,546 in 2025. Deaths refused to follow: 231 people died in 2018, and <b>229 died in 2025</b>. Divide one by the other and the line is blunt:</p>
+    <figure>
+      <p class="chart-title">Deaths per 1,000 reported crashes</p>
+      <div class="chart-box">
+        <svg id="dk-svg" viewBox="0 0 640 240" role="img" aria-label="Line chart from 2013 to 2025. Deaths per thousand reported crashes hover near 1 through 2019, jump to 2.4 in 2020, and stay near 2.9 through 2024.">
+          <line class="gline" x1="46" y1="147.3" x2="614" y2="147.3"></line>
+          <line class="gline" x1="46" y1="88.7" x2="614" y2="88.7"></line>
+          <line class="gline" x1="46" y1="30" x2="614" y2="30"></line>
+          <text x="40" y="150.8" text-anchor="end">1.0</text>
+          <text x="40" y="92.2" text-anchor="end">2.0</text>
+          <text x="40" y="33.5" text-anchor="end">3.0</text>
+          <polyline class="series-line" points="46,120.5 93.3,131.4 140.7,140.5 188,143.2 235.3,141 282.7,147.5 330,138.3 377.3,66.2 424.7,48.4 472,42.2 519.3,36 566.7,33.8 614,49"></polyline>
+          <circle class="anno-dot" cx="282.7" cy="147.5" r="4"></circle>
+          <text class="dlabel" x="282.7" y="170" text-anchor="middle">2018 · 1.0</text>
+          <circle class="anno-dot" cx="566.7" cy="33.8" r="4"></circle>
+          <text class="dlabel" x="560" y="24" text-anchor="end">2024 · 2.9</text>
+          <line class="axis" x1="46" y1="206" x2="614" y2="206"></line>
+          <text x="46" y="224" text-anchor="middle">2013</text>
+          <text x="188" y="224" text-anchor="middle">2016</text>
+          <text x="330" y="224" text-anchor="middle">2019</text>
+          <text x="472" y="224" text-anchor="middle">2022</text>
+          <text x="614" y="224" text-anchor="middle">2025</text>
+          <line id="dk-cross" class="cross" x1="0" y1="30" x2="0" y2="206"></line>
+          <circle id="dk-dot" class="hoverdot" r="4"></circle>
+          <rect id="dk-hit" class="hit" x="46" y="30" width="568" height="176"></rect>
+        </svg>
+      </div>
+      <figcaption>The 2020 jump coincides with NYPD scaling back reports for minor, no-injury crashes — the denominator shrank. Either way, the absolute death toll hasn't improved in a decade.</figcaption>
+    </figure>
+    <figure>
+      <p class="chart-title">Cyclist injuries by hour of day, all years</p>
+      <div class="chart-box">
+        <svg viewBox="0 0 640 240" role="img" aria-label="Bar chart of cyclist injuries by hour. A low near 430 at 4 AM rises through the day to a peak of 5,498 at 5 PM, then declines through the evening.">
+          <line class="gline" x1="46" y1="144.9" x2="613" y2="144.9"></line>
+          <line class="gline" x1="46" y1="83.8" x2="613" y2="83.8"></line>
+          <text x="40" y="148.4" text-anchor="end">2k</text>
+          <text x="40" y="87.3" text-anchor="end">4k</text>
+          <path class="bar" d="M46,206 L46,141.6 Q46,138.6 49,138.6 L62,138.6 Q65,138.6 65,141.6 L65,206 Z"></path>
+          <path class="bar" d="M69.8,206 L69.8,182.4 Q69.8,179.4 72.8,179.4 L85.8,179.4 Q88.8,179.4 88.8,182.4 L88.8,206 Z"></path>
+          <path class="bar" d="M93.6,206 L93.6,191.2 Q93.6,188.2 96.6,188.2 L109.6,188.2 Q112.6,188.2 112.6,191.2 L112.6,206 Z"></path>
+          <path class="bar" d="M117.4,206 L117.4,195.2 Q117.4,192.2 120.4,192.2 L133.4,192.2 Q136.4,192.2 136.4,195.2 L136.4,206 Z"></path>
+          <path class="bar" d="M141.2,206 L141.2,196 Q141.2,193 144.2,193 L157.2,193 Q160.2,193 160.2,196 L160.2,206 Z"></path>
+          <path class="bar" d="M165,206 L165,192.7 Q165,189.7 168,189.7 L181,189.7 Q184,189.7 184,192.7 L184,206 Z"></path>
+          <path class="bar" d="M188.8,206 L188.8,179.5 Q188.8,176.5 191.8,176.5 L204.8,176.5 Q207.8,176.5 207.8,179.5 L207.8,206 Z"></path>
+          <path class="bar" d="M212.6,206 L212.6,158.7 Q212.6,155.7 215.6,155.7 L228.6,155.7 Q231.6,155.7 231.6,158.7 L231.6,206 Z"></path>
+          <path class="bar" d="M236.4,206 L236.4,130.3 Q236.4,127.3 239.4,127.3 L252.4,127.3 Q255.4,127.3 255.4,130.3 L255.4,206 Z"></path>
+          <path class="bar" d="M260.2,206 L260.2,131.3 Q260.2,128.3 263.2,128.3 L276.2,128.3 Q279.2,128.3 279.2,131.3 L279.2,206 Z"></path>
+          <path class="bar" d="M284,206 L284,136.3 Q284,133.3 287,133.3 L300,133.3 Q303,133.3 303,136.3 L303,206 Z"></path>
+          <path class="bar" d="M307.8,206 L307.8,121.6 Q307.8,118.6 310.8,118.6 L323.8,118.6 Q326.8,118.6 326.8,121.6 L326.8,206 Z"></path>
+          <path class="bar" d="M331.6,206 L331.6,106.7 Q331.6,103.7 334.6,103.7 L347.6,103.7 Q350.6,103.7 350.6,106.7 L350.6,206 Z"></path>
+          <path class="bar" d="M355.4,206 L355.4,94.7 Q355.4,91.7 358.4,91.7 L371.4,91.7 Q374.4,91.7 374.4,94.7 L374.4,206 Z"></path>
+          <path class="bar" d="M379.2,206 L379.2,79.5 Q379.2,76.5 382.2,76.5 L395.2,76.5 Q398.2,76.5 398.2,79.5 L398.2,206 Z"></path>
+          <path class="bar" d="M403,206 L403,75.7 Q403,72.7 406,72.7 L419,72.7 Q422,72.7 422,75.7 L422,206 Z"></path>
+          <path class="bar" d="M426.8,206 L426.8,55.8 Q426.8,52.8 429.8,52.8 L442.8,52.8 Q445.8,52.8 445.8,55.8 L445.8,206 Z"></path>
+          <path class="bar" d="M450.6,206 L450.6,41 Q450.6,38 453.6,38 L466.6,38 Q469.6,38 469.6,41 L469.6,206 Z"></path>
+          <path class="bar" d="M474.4,206 L474.4,42.7 Q474.4,39.7 477.4,39.7 L490.4,39.7 Q493.4,39.7 493.4,42.7 L493.4,206 Z"></path>
+          <path class="bar" d="M498.2,206 L498.2,56 Q498.2,53 501.2,53 L514.2,53 Q517.2,53 517.2,56 L517.2,206 Z"></path>
+          <path class="bar" d="M522,206 L522,78.2 Q522,75.2 525,75.2 L538,75.2 Q541,75.2 541,78.2 L541,206 Z"></path>
+          <path class="bar" d="M545.8,206 L545.8,100 Q545.8,97 548.8,97 L561.8,97 Q564.8,97 564.8,100 L564.8,206 Z"></path>
+          <path class="bar" d="M569.6,206 L569.6,123.9 Q569.6,120.9 572.6,120.9 L585.6,120.9 Q588.6,120.9 588.6,123.9 L588.6,206 Z"></path>
+          <path class="bar" d="M593.4,206 L593.4,147.4 Q593.4,144.4 596.4,144.4 L609.4,144.4 Q612.4,144.4 612.4,147.4 L612.4,206 Z"></path>
+          <line class="axis" x1="46" y1="206" x2="613" y2="206"></line>
+          <text class="dlabel" x="460.1" y="30" text-anchor="middle">5,498</text>
+          <text x="55.5" y="224" text-anchor="middle">12am</text>
+          <text x="198.3" y="224" text-anchor="middle">6am</text>
+          <text x="341.1" y="224" text-anchor="middle">noon</text>
+          <text x="483.9" y="224" text-anchor="middle">6pm</text>
+          <text x="602.9" y="224" text-anchor="middle">11pm</text>
+          <g id="cyc-hits"></g>
+        </svg>
+      </div>
+      <figcaption>All crashes 2012–2026 combined. The evening commute is more than twice as dangerous for cyclists as the morning one.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>Cyclist injuries peak at <b>5 PM (5,498)</b> — 12× the 4 AM floor (427), and more than double the 8 AM rush (2,574).</li>
+      <li>Cyclist injuries rose from 4,075 (2013) to <b>5,358 (2025)</b> — up 31% while reported crashes fell by two-thirds. More people are riding; the streets haven't kept up.</li>
+      <li>The top named cause is no contest: <b>Driver Inattention/Distraction, 462,105 crashes</b> — 3.4× the runner-up, failure to yield.</li>
+    </ul>
+    <p class="caveat">"Reported crashes" is doing real work: NYPD largely stopped documenting minor no-injury crashes around 2020, which shrinks the denominator. Deaths are the hard number — and they are flat for a decade.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r2-meteorites">
+    <p class="eyebrow">Dispatch · <span class="dim">NASA · Meteorite Landings</span></p>
+    <h2>Half of everything we've caught falling from space was picked up in Antarctica</h2>
+    <div>
+      <div class="hero-n">45,716</div>
+      <p class="hero-cap">documented meteorites — only 1,107 were seen falling</p>
+    </div>
+    <p>NASA's portal fought us for two rounds — the CSV endpoint hung, then threw SSL errors — before finally surrendering a 19&nbsp;MB legacy XML export. Worth the fight: The Meteoritical Society's catalog of every known meteorite holds three quiet surprises about how humanity actually collects space rocks.</p>
+    <div class="chips">
+      <span class="chip">witnessed falls <b>1,107</b> · 2.4%</span>
+      <span class="chip">found later <b>44,609</b> · 97.6%</span>
+      <span class="chip">median mass <b>32.7 g</b></span>
+      <span class="chip">mean mass <b>13.3 kg</b></span>
+      <span class="chip">largest: Hoba <b>60 t</b></span>
+    </div>
+    <figure>
+      <p class="chart-title">Meteorites recorded, by era of discovery</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">before 1900</span><span class="track" style="width:3.1%"></span><span class="val">728</span></div>
+        <div class="hb"><span class="name">1900–1969</span><span class="track" style="width:6.7%"></span><span class="val">1,566</span></div>
+        <div class="hb"><span class="name">1970–1999</span><span class="track" style="width:100%"></span><span class="val">23,410</span></div>
+        <div class="hb"><span class="name">2000–present</span><span class="track" style="width:84.2%"></span><span class="val">19,720</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li><b>94% of all known meteorites were recorded after 1970.</b> Earth didn't start getting hit harder — scientists started sweeping Antarctic blue ice. <b>68.7%</b> of validly located meteorites lie below 60°S (an earlier pass said 57.5%; junk rows at (0,0) were diluting the share — the verifiers caught it).</li>
+      <li>The mass distribution is absurdly skewed: median <b>32.7 grams</b>, mean <b>13.3 kilograms</b> — dragged 406× off the median by giants like Hoba, a 60-tonne slab never moved from the Namibian field where it was found in 1920.</li>
+      <li>Only <b>2.4%</b> of meteorites were ever witnessed falling. Nearly everything we know about what hits us, we reconstructed after the fact.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r2-quakes">
+    <p class="eyebrow">Dispatch · <span class="dim">USGS · Earthquake Catalog, live API</span></p>
+    <h2>Earth had 2,018 magnitude-5 earthquakes this year. That's normal.</h2>
+    <p>The USGS event API answers in real time, so this story is a snapshot of the planet's trailing 365 days. The ladder is the lesson — each magnitude step up releases ~32× more energy and happens roughly a tenth as often:</p>
+    <div class="ladder">
+      <div class="lrow"><span class="lm">M5+</span><span class="ln">2,018</span><span class="lc">about 5.5 per day, somewhere on Earth</span></div>
+      <div class="lrow"><span class="lm">M6+</span><span class="ln">143</span><span class="lc">one every two and a half days</span></div>
+      <div class="lrow"><span class="lm">M7+</span><span class="ln">18</span><span class="lc">one every three weeks</span></div>
+      <div class="lrow"><span class="lm">M8+</span><span class="ln">0</span><span class="lc">none this year — the top of the ladder stayed quiet</span></div>
+    </div>
+    <ul class="facts">
+      <li>The year's largest: a <b>M7.8 near Kablalan, Philippines</b> (June 2026) and a <b>M7.8 off Kamchatka</b> (September 2025) — tied at the top.</li>
+      <li>A <b>M7.7 struck near Ende, Indonesia</b> on August 14, 2026 — days before this was written.</li>
+      <li>The near-perfect ~10× thinning per magnitude step is the Gutenberg–Richter law, visible in a single API call: 2,018 → 143 → 18 → 0.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r1-cfpb">
+    <p class="eyebrow">Dispatch · <span class="dim">CFPB · Consumer Complaint Database</span></p>
+    <h2>The federal complaint box has become a machine — and the machine is mostly one complaint</h2>
+    <div>
+      <div class="hero-n">17,242,643</div>
+      <p class="hero-cap">complaints in the public database at time of pull</p>
+    </div>
+    <p>The CFPB has published every consumer complaint it has handled since 2011. For a decade the volume grew steadily — around 250,000 a year by 2018. Then it went vertical: the database logged <b>5.44 million</b> complaints dated 2025, and 2026 had already passed <b>4.56 million by late August</b>. Complaint volume roughly doubled every year for three years straight.</p>
+    <figure>
+      <p class="chart-title">Complaints per year in the public database</p>
+      <div class="chart-box">
+        <svg viewBox="0 0 640 240" role="img" aria-label="Bar chart of CFPB complaints per year, 2012 through 2026, showing roughly 72 thousand in 2012 rising slowly to 277 thousand in 2019, then doubling repeatedly to 5.44 million in 2025, with 2026 year-to-date already at 4.56 million.">
+          <defs>
+            <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="var(--chart)" stroke-width="2.5"></line>
+            </pattern>
+          </defs>
+          <line class="gline" x1="46" y1="175.1" x2="612" y2="175.1"></line>
+          <line class="gline" x1="46" y1="144.3" x2="612" y2="144.3"></line>
+          <line class="gline" x1="46" y1="113.4" x2="612" y2="113.4"></line>
+          <line class="gline" x1="46" y1="82.6" x2="612" y2="82.6"></line>
+          <line class="gline" x1="46" y1="51.7" x2="612" y2="51.7"></line>
+          <text x="40" y="178.6" text-anchor="end">1M</text>
+          <text x="40" y="147.8" text-anchor="end">2M</text>
+          <text x="40" y="116.9" text-anchor="end">3M</text>
+          <text x="40" y="86.1" text-anchor="end">4M</text>
+          <text x="40" y="55.2" text-anchor="end">5M</text>
+          <rect class="bar" x="46" y="203.8" width="34" height="2.2"></rect>
+          <path class="bar" d="M84,206 L84,205.7 Q84,202.7 87,202.7 L115,202.7 Q118,202.7 118,205.7 L118,206 Z"></path>
+          <path class="bar" d="M122,206 L122,204.3 Q122,201.3 125,201.3 L153,201.3 Q156,201.3 156,204.3 L156,206 Z"></path>
+          <path class="bar" d="M160,206 L160,203.8 Q160,200.8 163,200.8 L191,200.8 Q194,200.8 194,203.8 L194,206 Z"></path>
+          <path class="bar" d="M198,206 L198,203.1 Q198,200.1 201,200.1 L229,200.1 Q232,200.1 232,203.1 L232,206 Z"></path>
+          <path class="bar" d="M236,206 L236,201.5 Q236,198.5 239,198.5 L267,198.5 Q270,198.5 270,201.5 L270,206 Z"></path>
+          <path class="bar" d="M274,206 L274,201.1 Q274,198.1 277,198.1 L305,198.1 Q308,198.1 308,201.1 L308,206 Z"></path>
+          <path class="bar" d="M312,206 L312,200.4 Q312,197.4 315,197.4 L343,197.4 Q346,197.4 346,200.4 L346,206 Z"></path>
+          <path class="bar" d="M350,206 L350,195.3 Q350,192.3 353,192.3 L381,192.3 Q384,192.3 384,195.3 L384,206 Z"></path>
+          <path class="bar" d="M388,206 L388,193.7 Q388,190.7 391,190.7 L419,190.7 Q422,190.7 422,193.7 L422,206 Z"></path>
+          <path class="bar" d="M426,206 L426,184.3 Q426,181.3 429,181.3 L457,181.3 Q460,181.3 460,184.3 L460,206 Z"></path>
+          <path class="bar" d="M464,206 L464,169.1 Q464,166.1 467,166.1 L495,166.1 Q498,166.1 498,169.1 L498,206 Z"></path>
+          <path class="bar" d="M502,206 L502,124.6 Q502,121.6 505,121.6 L533,121.6 Q536,121.6 536,124.6 L536,206 Z"></path>
+          <path class="bar" d="M540,206 L540,41 Q540,38 543,38 L571,38 Q574,38 574,41 L574,206 Z"></path>
+          <path d="M578,206 L578,68.2 Q578,65.2 581,65.2 L609,65.2 Q612,65.2 612,68.2 L612,206 Z" fill="url(#hatch)" stroke="var(--chart)" stroke-width="1"></path>
+          <line class="axis" x1="46" y1="206" x2="612" y2="206"></line>
+          <text class="dlabel" x="557" y="30" text-anchor="middle">5.44M</text>
+          <text class="dlabel" x="63" y="197" text-anchor="middle">72k</text>
+          <text x="595" y="58" text-anchor="middle">YTD</text>
+          <text x="63" y="224" text-anchor="middle">'12</text>
+          <text x="139" y="224" text-anchor="middle">'14</text>
+          <text x="215" y="224" text-anchor="middle">'16</text>
+          <text x="291" y="224" text-anchor="middle">'18</text>
+          <text x="367" y="224" text-anchor="middle">'20</text>
+          <text x="443" y="224" text-anchor="middle">'22</text>
+          <text x="519" y="224" text-anchor="middle">'24</text>
+          <text x="595" y="224" text-anchor="middle">'26</text>
+          <g id="cfpb-hits"></g>
+        </svg>
+      </div>
+      <figcaption>2026 (hatched) is year-to-date through Aug 21. Counts by date received, public database.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>One product category — <em>credit reporting</em> — was <b>88.4%</b> of all 2025 complaints (4,810,303 of 5,442,974).</li>
+      <li>The three credit bureaus dwarf everyone: TransUnion <b>4.73M</b>, Equifax <b>4.56M</b>, Experian <b>4.13M</b> — together <b>78%</b> of every complaint ever filed. TransUnion has <b>25×</b> more complaints than any actual bank.</li>
+      <li>Why? The CFPB itself says the portal is being flooded by <a href="https://www.consumerfinance.gov/about-us/newsroom/the-cfpb-is-correcting-flaws-to-restore-integrity-and-utility-to-the-consumer-complaint-system/">AI-generated and duplicative complaints from credit-repair operations</a>. The database quietly stopped measuring consumer anger and started measuring <em>automation</em>.</li>
+    </ul>
+    <p class="caveat">Public DB excludes complaints that fail publication criteria — CFPB's official 2025 count is higher (6.6M received, per its annual report). Trend shape is the same either way.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r1-lifeexp">
+    <p class="eyebrow">Dispatch · <span class="dim">CDC/NCHS · Life expectancy at birth, 1900–2018</span></p>
+    <h2>1918 erased eleven years of life expectancy in twelve months</h2>
+    <p>One tidy table, 119 years of American life. In 1917, a newborn could expect 50.9 years. In 1918 — influenza plus the war — that number collapsed to <b>39.1</b>. It is the most violent single move in the series, and the rebound is just as strange: 1919 snapped back to 54.7, <em>higher than before the pandemic</em>, because the flu had already taken the most vulnerable.</p>
+    <figure>
+      <p class="chart-title">U.S. life expectancy at birth, both sexes, 1900–2018</p>
+      <div class="chart-box">
+        <svg id="le-svg" viewBox="0 0 640 240" role="img" aria-label="Line chart of U.S. life expectancy at birth from 1900 to 2018. It rises from 47.3 to 78.7 with wild volatility before 1950, a dramatic collapse to 39.1 in 1918, and a flat plateau from 2010 to 2018.">
+          <line class="gline" x1="46" y1="188.4" x2="614" y2="188.4"></line>
+          <line class="gline" x1="46" y1="153.2" x2="614" y2="153.2"></line>
+          <line class="gline" x1="46" y1="118"   x2="614" y2="118"></line>
+          <line class="gline" x1="46" y1="82.8"  x2="614" y2="82.8"></line>
+          <line class="gline" x1="46" y1="47.6"  x2="614" y2="47.6"></line>
+          <text x="40" y="192" text-anchor="end">40</text>
+          <text x="40" y="156.7" text-anchor="end">50</text>
+          <text x="40" y="121.5" text-anchor="end">60</text>
+          <text x="40" y="86.3" text-anchor="end">70</text>
+          <text x="40" y="51.1" text-anchor="end">80</text>
+          <polyline class="series-line" points="46,162.7 50.8,156.4 55.6,147.9 60.4,151.4 65.3,161.6 70.1,157.8 74.9,157.8 79.7,161.6 84.5,149.3 89.3,145.8 94.1,153.2 98.9,144 103.8,140.9 108.6,144.4 113.4,138.4 118.2,137.4 123,147.2 127.8,150 132.6,191.6 137.5,136.7 142.3,138.8 147.1,115.2 151.9,119.4 156.7,127.9 161.5,119.1 166.3,121.5 171.2,129.6 176,116.6 180.8,129.3 185.6,128.2 190.4,119.1 195.2,114.1 200,110.6 204.8,106.4 209.7,114.1 214.5,112 219.3,123.3 224.1,118 228.9,105.7 233.7,105 238.5,107.8 243.4,101.1 248.2,96.2 253,106.4 257.8,99.7 262.6,97.2 267.4,94.4 272.2,94.1 277.1,92.7 281.9,89.8 286.7,89.1 291.5,88.4 296.3,87.7 301.1,87 305.9,84.2 310.7,84.2 315.6,83.9 320.4,84.6 325.2,84.2 330,83.2 334.8,83.9 339.6,82.1 344.4,82.4 349.3,83.2 354.1,82.1 358.9,82.1 363.7,82.1 368.5,81 373.3,82.1 378.1,81 382.9,80 387.8,78.9 392.6,78.6 397.4,77.9 402.2,75.8 407,73.6 411.8,72.6 416.6,71.2 421.5,70.5 426.3,69.1 431.1,69.8 435.9,68.4 440.7,67 445.5,66.6 450.3,66.3 455.2,66.3 460,66.3 464.8,65.6 469.6,65.6 474.4,64.8 479.2,63.8 484,63.4 488.8,62.4 493.7,63.4 498.5,62.7 503.3,62.4 508.1,61.3 512.9,59.9 517.7,59.2 522.5,59.2 527.4,58.9 532.2,58.2 537,58.2 541.8,56 546.6,56.4 551.4,56 556.2,55.3 561.1,54.3 565.9,53.9 570.7,52.9 575.5,52.2 580.3,52.2 585.1,51.8 589.9,51.8 594.7,51.5 599.6,52.2 604.4,52.2 609.2,52.5 614,52.2"></polyline>
+          <circle class="anno-dot" cx="132.6" cy="191.6" r="4"></circle>
+          <text class="dlabel" x="146" y="198">1918 · 39.1</text>
+          <circle class="anno-dot" cx="614" cy="52.2" r="4"></circle>
+          <text class="dlabel" x="612" y="40" text-anchor="end">2018 · 78.7</text>
+          <text class="dlabel" x="50" y="146">1900 · 47.3</text>
+          <line class="axis" x1="46" y1="206" x2="614" y2="206"></line>
+          <text x="46" y="224" text-anchor="middle">1900</text>
+          <text x="142.3" y="224" text-anchor="middle">1920</text>
+          <text x="238.6" y="224" text-anchor="middle">1940</text>
+          <text x="334.9" y="224" text-anchor="middle">1960</text>
+          <text x="431.2" y="224" text-anchor="middle">1980</text>
+          <text x="527.5" y="224" text-anchor="middle">2000</text>
+          <text x="614" y="224" text-anchor="middle">2018</text>
+          <line id="le-cross" class="cross" x1="0" y1="30" x2="0" y2="206"></line>
+          <circle id="le-dot" class="hoverdot" r="4"></circle>
+          <rect id="le-hit" class="hit" x="46" y="30" width="568" height="176"></rect>
+        </svg>
+      </div>
+      <figcaption>NCHS series ends in 2018 — the COVID-era dip lives in a separate dataset.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>The century's arc: <b>47.3 → 78.7</b>, thirty-one years gained. The two halves differ in <em>texture</em>: jagged chaos before 1950, then an almost perfectly smooth climb — the switch from dying of infections to dying of chronic disease.</li>
+      <li>The last decade of the series is the quiet shock: <b>78.7 in 2010 → 78.7 in 2018</b>. Zero net progress — the famous U.S. stagnation, before COVID ever arrived.</li>
+      <li>The female–male gap: just <b>1.0 year</b> in 1920, peaking at <b>7.8 years in 1979</b>, narrowing to 5.0 by 2018.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r1-ev">
+    <p class="eyebrow">Dispatch · <span class="dim">Washington State DOL · Electric Vehicle Population</span></p>
+    <h2>Watching a technology arrive, one license plate at a time</h2>
+    <p>Washington publishes a row for every EV currently registered in the state — <b>294,193</b> at time of pull. Because each row carries a model year, the registry doubles as a fossil record of adoption: a decade of polite growth, then a wall.</p>
+    <figure>
+      <p class="chart-title">EVs on Washington roads today, by model year</p>
+      <div class="chart-box">
+        <svg viewBox="0 0 640 216" role="img" aria-label="Bar chart of Washington EV registrations by model year, 2011 to 2026. Slow growth from 527 in 2011 to about 14,000 in 2018, then rapid rise to a peak of 60,689 for model year 2023.">
+          <line class="gline" x1="46" y1="136.6" x2="616" y2="136.6"></line>
+          <line class="gline" x1="46" y1="87.1" x2="616" y2="87.1"></line>
+          <line class="gline" x1="46" y1="37.7" x2="616" y2="37.7"></line>
+          <text x="40" y="140.1" text-anchor="end">20k</text>
+          <text x="40" y="90.6" text-anchor="end">40k</text>
+          <text x="40" y="41.2" text-anchor="end">60k</text>
+          <rect class="bar" x="46" y="184.7" width="30" height="1.3"></rect>
+          <path class="bar" d="M82,186 L82,185.8 Q82,182.8 85,182.8 L109,182.8 Q112,182.8 112,185.8 L112,186 Z"></path>
+          <path class="bar" d="M118,186 L118,179.6 Q118,176.6 121,176.6 L145,176.6 Q148,176.6 148,179.6 L148,186 Z"></path>
+          <path class="bar" d="M154,186 L154,181.4 Q154,178.4 157,178.4 L181,178.4 Q184,178.4 184,181.4 L184,186 Z"></path>
+          <path class="bar" d="M190,186 L190,178.3 Q190,175.3 193,175.3 L217,175.3 Q220,175.3 220,178.3 L220,186 Z"></path>
+          <path class="bar" d="M226,186 L226,176.6 Q226,173.6 229,173.6 L253,173.6 Q256,173.6 256,176.6 L256,186 Z"></path>
+          <path class="bar" d="M262,186 L262,168.3 Q262,165.3 265,165.3 L289,165.3 Q292,165.3 292,168.3 L292,186 Z"></path>
+          <path class="bar" d="M298,186 L298,154.7 Q298,151.7 301,151.7 L325,151.7 Q328,151.7 328,154.7 L328,186 Z"></path>
+          <path class="bar" d="M334,186 L334,162.5 Q334,159.5 337,159.5 L361,159.5 Q364,159.5 364,162.5 L364,186 Z"></path>
+          <path class="bar" d="M370,186 L370,159.5 Q370,156.5 373,156.5 L397,156.5 Q400,156.5 400,159.5 L400,186 Z"></path>
+          <path class="bar" d="M406,186 L406,138.1 Q406,135.1 409,135.1 L433,135.1 Q436,135.1 436,138.1 L436,186 Z"></path>
+          <path class="bar" d="M442,186 L442,114.6 Q442,111.6 445,111.6 L469,111.6 Q472,111.6 472,114.6 L472,186 Z"></path>
+          <path class="bar" d="M478,186 L478,39 Q478,36 481,36 L505,36 Q508,36 508,39 L508,186 Z"></path>
+          <path class="bar" d="M514,186 L514,67 Q514,64 517,64 L541,64 Q544,64 544,67 L544,186 Z"></path>
+          <path class="bar" d="M550,186 L550,97.7 Q550,94.7 553,94.7 L577,94.7 Q580,94.7 580,97.7 L580,186 Z"></path>
+          <path class="bar dim" d="M586,186 L586,107.1 Q586,104.1 589,104.1 L613,104.1 Q616,104.1 616,107.1 L616,186 Z"></path>
+          <line class="axis" x1="46" y1="186" x2="616" y2="186"></line>
+          <text class="dlabel" x="493" y="28" text-anchor="middle">60,689</text>
+          <text x="61" y="204" text-anchor="middle">'11</text>
+          <text x="133" y="204" text-anchor="middle">'13</text>
+          <text x="205" y="204" text-anchor="middle">'15</text>
+          <text x="277" y="204" text-anchor="middle">'17</text>
+          <text x="349" y="204" text-anchor="middle">'19</text>
+          <text x="421" y="204" text-anchor="middle">'21</text>
+          <text x="493" y="204" text-anchor="middle">'23</text>
+          <text x="565" y="204" text-anchor="middle">'25</text>
+          <g id="ev-hits"></g>
+        </svg>
+      </div>
+      <figcaption>Vehicles currently registered, not sales. Model year 2026 (faded) is still filling.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li><b>41%</b> of every EV in the state is a Tesla (120,899). Second place — Chevrolet — has 19,964.</li>
+      <li>Pure battery EVs outnumber plug-in hybrids <b>4 to 1</b>. The transitional technology is losing to the destination.</li>
+      <li>Average range of the registered fleet <b>3.6×'d in a decade</b>: 76 miles (2011 models) to 277 miles (2020 models).</li>
+    </ul>
+    <p class="caveat">One state, and a rich one — WA is not the national picture. Registrations lag and churn with the used market; model years run ahead of calendar years.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r1-squirrels">
+    <p class="eyebrow">Dispatch · <span class="dim">NYC Open Data · 2018 Central Park Squirrel Census</span></p>
+    <h2>The government knows how many squirrels moaned at it</h2>
+    <p>In October 2018, volunteer sighters swept Central Park hectare by hectare and logged <b>3,023 squirrel encounters</b>, each with coordinates, fur color, and a full behavioral readout. It is the most lovingly over-instrumented dataset in the catalog, and it's real, and it's on data.gov.</p>
+    <div class="chips">
+      <span class="chip"><span class="swatch" style="background:#8E9196"></span>Gray <b>2,473</b> · 82%</span>
+      <span class="chip"><span class="swatch" style="background:#A85F2E"></span>Cinnamon <b>392</b> · 13%</span>
+      <span class="chip"><span class="swatch" style="background:#26282B"></span>Black <b>103</b> · 3.4%</span>
+      <span class="chip">unrecorded <b>55</b></span>
+    </div>
+    <figure>
+      <p class="chart-title">What the squirrels were doing (share of 3,023 sightings; behaviors overlap)</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">indifferent</span><span class="track" style="width:48.1%"></span><span class="val">1,454 · 48%</span></div>
+        <div class="hb"><span class="name">foraging</span><span class="track" style="width:47.5%"></span><span class="val">1,435 · 48%</span></div>
+        <div class="hb"><span class="name">eating</span><span class="track" style="width:25.1%"></span><span class="val">760 · 25%</span></div>
+        <div class="hb"><span class="name">running</span><span class="track" style="width:24.1%"></span><span class="val">730 · 24%</span></div>
+        <div class="hb"><span class="name">fled human</span><span class="track" style="width:22.4%"></span><span class="val">678 · 22%</span></div>
+        <div class="hb"><span class="name">climbing</span><span class="track" style="width:21.8%"></span><span class="val">658 · 22%</span></div>
+        <div class="hb"><span class="name">chasing</span><span class="track" style="width:9.2%"></span><span class="val">279 · 9%</span></div>
+        <div class="hb"><span class="name">approached</span><span class="track" style="width:5.9%"></span><span class="val">178 · 6%</span></div>
+        <div class="hb"><span class="name">tail flags</span><span class="track" style="width:5.1%"></span><span class="val">155 · 5%</span></div>
+        <div class="hb"><span class="name">kuks</span><span class="track" style="width:3.4%"></span><span class="val">102 · 3%</span></div>
+        <div class="hb"><span class="name">quaas</span><span class="track" style="width:1.7%"></span><span class="val">50 · 2%</span></div>
+        <div class="hb"><span class="name">moans</span><span class="track" style="width:0.35%"></span><span class="val">3 · 0.1%</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>Central Park squirrels are thoroughly urbanized: <b>48%</b> ignored the humans observing them, only <b>22%</b> fled, and <b>5.9%</b> walked right up — presumably invoicing for snacks.</li>
+      <li>It is a matter of public record that exactly <b>three squirrels moaned</b> in Central Park in October 2018.</li>
+      <li>The black-squirrel population — the internet's favorite — is real but rare: 1 in 29.</li>
+    </ul>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <footer>
+    <p class="method"><b>Method.</b> Every figure was queried live from a government API — Socrata SoQL aggregations (<code>$select=…,count(*)&amp;$group=…</code>), the CFPB Complaint Search API, FDIC BankFind, Treasury FiscalData, the USGS FDSN event service, and Census/SAIPE flat files. Cross-dataset stories ran as multi-agent workflows in which every pull was followed by an adversarial verifier that re-fetched the sources and recomputed the load-bearing numbers; two errors were caught and corrected that way, and both corrections are disclosed in place.</p>
+    <p class="method"><b>Sharing.</b> The share buttons target whatever URL this page lives at, per story. Note: Facebook's link preview needs a publicly reachable page — share this artifact from its share menu first, or host the file publicly. Rich preview cards additionally require Open Graph tags in the page head, which need real hosting.</p>
+    <p>Datasets &amp; sources:</p>
+    <ul>
+      <li><a href="https://www.consumerfinance.gov/data-research/consumer-complaints/">CFPB Consumer Complaint Database</a> · <a href="https://files.consumerfinance.gov/f/documents/cfpb_cr-annual-report_2025-05.pdf">CFPB Consumer Response Annual Report</a></li>
+      <li><a href="https://catalog.data.gov/dataset/nchs-death-rates-and-life-expectancy-at-birth">NCHS — Death rates and life expectancy at birth</a> (data.cdc.gov <code>w9j2-ggv5</code>)</li>
+      <li><a href="https://catalog.data.gov/dataset/electric-vehicle-population-data">Electric Vehicle Population Data</a> (data.wa.gov <code>f6w7-q2d2</code>)</li>
+      <li><a href="https://catalog.data.gov/dataset/2018-central-park-squirrel-census-squirrel-data">2018 Central Park Squirrel Census</a> (NYC Open Data <code>vfnx-vebw</code>)</li>
+      <li><a href="https://catalog.data.gov/dataset/border-crossing-entry-data-683ae">Border Crossing Entry Data</a> (data.transportation.gov <code>keg4-3bc2</code>)</li>
+      <li><a href="https://catalog.data.gov/dataset/motor-vehicle-collisions-crashes">Motor Vehicle Collisions — Crashes</a> (NYC Open Data <code>h9gi-nx95</code>)</li>
+      <li><a href="https://catalog.data.gov/dataset/meteorite-landings">Meteorite Landings</a> (NASA / The Meteoritical Society)</li>
+      <li><a href="https://earthquake.usgs.gov/fdsnws/event/1/">USGS Earthquake Catalog</a> (FDSN event API)</li>
+      <li><a href="https://banks.data.fdic.gov/docs/">FDIC BankFind Suite API</a> · <a href="https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/debt-to-the-penny">Treasury FiscalData</a></li>
+      <li><a href="https://www.census.gov/programs-surveys/popest.html">Census Population Estimates</a> · <a href="https://www.census.gov/programs-surveys/saipe.html">SAIPE</a></li>
+      <li><a href="https://catalog.data.gov/dataset">data.gov catalog</a> — 552,271 datasets at time of writing</li>
+    </ul>
+  </footer>
+
+</div>
+
+<div id="tip" role="status"></div>
+<div id="toast" role="status"></div>
+
+<script>
+(function () {
+  var tip = document.getElementById('tip');
+  function showTip(text, x, y) {
+    tip.textContent = text;
+    tip.style.opacity = '1';
+    var pad = 14;
+    var w = tip.offsetWidth;
+    var left = x + pad;
+    if (left + w > window.innerWidth - 8) left = x - w - pad;
+    tip.style.left = left + 'px';
+    tip.style.top = (y - 34) + 'px';
+  }
+  function hideTip() { tip.style.opacity = '0'; }
+
+  function addBarHits(groupId, bars) {
+    var g = document.getElementById(groupId);
+    if (!g) return;
+    bars.forEach(function (b) {
+      var r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      r.setAttribute('x', b.x); r.setAttribute('y', 26);
+      r.setAttribute('width', b.w); r.setAttribute('height', b.base - 26);
+      r.setAttribute('class', 'hit');
+      r.addEventListener('pointermove', function (e) { showTip(b.label, e.clientX, e.clientY); });
+      r.addEventListener('pointerleave', hideTip);
+      g.appendChild(r);
+    });
+  }
+
+  var fmt = function (n) { return n.toLocaleString('en-US'); };
+
+  var cfpbVals = [72368,108214,152909,168273,191292,242745,257131,277240,444213,495939,800245,1292049,2734270,5442974,4560245];
+  addBarHits('cfpb-hits', cfpbVals.map(function (v, i) {
+    return { x: 46 + i * 38, w: 34, base: 206, label: (2012 + i) + (i === 14 ? ' YTD' : '') + ' · ' + fmt(v) };
+  }));
+
+  var evVals = [527,1287,3806,3093,4336,5000,8355,13865,10733,11941,20610,30088,60689,49354,36943,33144];
+  addBarHits('ev-hits', evVals.map(function (v, i) {
+    return { x: 46 + i * 36, w: 30, base: 186, label: 'MY ' + (2011 + i) + ' · ' + fmt(v) };
+  }));
+
+  var cycVals = [2206,871,581,452,427,535,965,1645,2574,2543,2378,2861,3349,3740,4237,4363,5015,5498,5444,5007,4279,3567,2784,2015];
+  addBarHits('cyc-hits', cycVals.map(function (v, i) {
+    return { x: 46 + i * 23.8, w: 19, base: 206, label: i + ':00 · ' + fmt(v) + ' injured' };
+  }));
+
+  var leVals = [47.3,49.1,51.5,50.5,47.6,48.7,48.7,47.6,51.1,52.1,50,52.6,53.5,52.5,54.2,54.5,51.7,50.9,39.1,54.7,54.1,60.8,59.6,57.2,59.7,59,56.7,60.4,56.8,57.1,59.7,61.1,62.1,63.3,61.1,61.7,58.5,60,63.5,63.7,62.9,64.8,66.2,63.3,65.2,65.9,66.7,66.8,67.2,68,68.2,68.4,68.6,68.8,69.6,69.6,69.7,69.5,69.6,69.9,69.7,70.2,70.1,69.9,70.2,70.2,70.2,70.5,70.2,70.5,70.8,71.1,71.2,71.4,72,72.6,72.9,73.3,73.5,73.9,73.7,74.1,74.5,74.6,74.7,74.7,74.7,74.9,74.9,75.1,75.4,75.5,75.8,75.5,75.7,75.8,76.1,76.5,76.7,76.7,76.8,77,77,77.6,77.5,77.6,77.8,78.1,78.2,78.5,78.7,78.7,78.8,78.8,78.9,78.7,78.7,78.6,78.7];
+
+  function wireLine(svgId, hitId, crossId, series, x0, xSpan, nPts, tipFn) {
+    var svg = document.getElementById(svgId);
+    var hit = document.getElementById(hitId);
+    var cross = document.getElementById(crossId);
+    if (!svg || !hit) return;
+    hit.addEventListener('pointermove', function (e) {
+      var pt = svg.createSVGPoint();
+      pt.x = e.clientX; pt.y = e.clientY;
+      var sp = pt.matrixTransform(svg.getScreenCTM().inverse());
+      var i = Math.round((sp.x - x0) / xSpan * (nPts - 1));
+      i = Math.max(0, Math.min(nPts - 1, i));
+      var x = x0 + i / (nPts - 1) * xSpan;
+      cross.setAttribute('x1', x); cross.setAttribute('x2', x);
+      cross.style.opacity = '1';
+      series.forEach(function (s) {
+        var dot = document.getElementById(s.dotId);
+        dot.setAttribute('cx', x); dot.setAttribute('cy', s.y(i));
+        dot.style.opacity = '1';
+      });
+      showTip(tipFn(i), e.clientX, e.clientY);
+    });
+    hit.addEventListener('pointerleave', function () {
+      cross.style.opacity = '0';
+      series.forEach(function (s) { document.getElementById(s.dotId).style.opacity = '0'; });
+      hideTip();
+    });
+  }
+
+  wireLine('le-svg', 'le-hit', 'le-cross', [
+    { dotId: 'le-dot', y: function (i) { return 206 - (leVals[i] - 35) / 50 * 176; } }
+  ], 46, 568, 119, function (i) { return (1900 + i) + ' · ' + leVals[i] + ' yrs'; });
+
+  var bcPeople = [313349230,358620695,367222988,387683500,386145273,344426635,327779329,313212475,310638010,302290484,295980049,280248288,267862783,241390862,228232869,216026304,224198885,231587189,235908812,236173238,237655762,240702509,246945926,241926067,116910613,132373703,193800432,219108054,227777780,219020663];
+  var bcTrucks = [8685180,9516639,10217477,11176168,11573707,11081868,11342566,10973782,11407570,11461545,11409765,11360261,10760803,9312098,10187330,10358751,10727430,10843525,11216777,11326392,11680719,11886367,12141829,12121410,11580717,12519086,12751628,12882715,13167757,12856744];
+  wireLine('bc-svg', 'bc-hit', 'bc-cross', [
+    { dotId: 'bc-dot1', y: function (i) { return 206 - (bcPeople[i] / bcPeople[0] * 100) / 160 * 176; } },
+    { dotId: 'bc-dot2', y: function (i) { return 206 - (bcTrucks[i] / bcTrucks[0] * 100) / 160 * 176; } }
+  ], 46, 568, 30, function (i) {
+    return (1996 + i) + ' · people ' + Math.round(bcPeople[i] / bcPeople[0] * 100) + ' · trucks ' + Math.round(bcTrucks[i] / bcTrucks[0] * 100);
+  });
+
+  var dkVals = [1.46,1.27,1.12,1.07,1.11,1,1.15,2.38,2.69,2.79,2.9,2.93,2.68];
+  wireLine('dk-svg', 'dk-hit', 'dk-cross', [
+    { dotId: 'dk-dot', y: function (i) { return 206 - dkVals[i] / 3 * 176; } }
+  ], 46, 568, 13, function (i) {
+    return (2013 + i) + ' · ' + dkVals[i].toFixed(2) + ' deaths per 1k crashes';
+  });
+
+  var ssW = [2.8,1.3,0.8,0.6,0.7,0.9,1.8,2.1,3.7,3.5,3.3,4.2,5.6,5.7,6.2,6.3,6.4,8.5,9,8,6.8,4.7,4.2,2.9];
+  var ssS = [3.4,1.5,1.1,0.8,0.6,0.7,1.2,2.2,3.6,3.8,3.5,4.3,4.8,5.4,6,6.3,7.4,8.1,8.2,7.5,6.3,5.7,4.3,3.2];
+  wireLine('ss-svg', 'ss-hit', 'ss-cross', [
+    { dotId: 'ss-dot1', y: function (i) { return 206 - ssW[i] / 10 * 176; } },
+    { dotId: 'ss-dot2', y: function (i) { return 206 - ssS[i] / 10 * 176; } }
+  ], 46, 568, 24, function (i) {
+    return i + ':00 · winter ' + ssW[i] + '% · summer ' + ssS[i] + '%';
+  });
+
+  var scData = [['San Juan',301.1,41.8,86442,72.6],['King',578.9,70.4,120672,60.7],['Jefferson',231.5,101.5,77856,47.7],['Snohomish',460.4,112.9,106067,43],['Island',317.4,126.5,88451,37.3],['Kitsap',402.2,129.1,98894,36.2],['Thurston',349.1,130.4,92357,35.7],['Clark',388.7,132.5,97240,34.8],['Whatcom',215.8,140.8,75920,31.3],['Skagit',333.5,152.6,90432,26.4],['Pierce',390.8,153.3,97493,26.1],['Kittitas',138.3,156.9,66374,24.6],['Chelan',207.1,157.7,74848,24.3],['Skamania',290.5,158,85131,24.2],['Clallam',143.9,158.6,67071,23.9],['Klickitat',164.4,162,69596,22.5],['Mason',209.4,162.1,75138,22.4],['Wahkiakum',165.5,167.5,69726,20.2],['Benton',273.5,167.8,83040,20.1],['Pacific',101,177.6,61773,16],['Lewis',150.5,178.5,67877,15.6],['Spokane',195.1,179.3,73380,15.3],['Grays Harbor',133.3,179.7,65758,15.1],['Douglas',166.2,180.2,69808,14.9],['Cowlitz',183.9,181.6,71996,14.4],['Walla Walla',178.7,182.8,71348,13.8],['Franklin',269.5,184.1,82542,13.3],['Whitman',78.8,185.6,59044,12.7],['Grant',178.9,187.7,71374,11.8],['Okanogan',71,190.5,58085,10.6],['Pend Oreille',115.9,194.9,63611,8.8],['Ferry',63,195.3,57090,8.6],['Stevens',147.6,195.8,67525,8.4],['Yakima',144.3,195.9,67112,8.4],['Lincoln',183.2,197,71908,7.9],['Adams',143.8,200.1,67056,6.6],['Columbia',137.4,201.7,66267,6],['Asotin',125.4,202.4,64789,5.7],['Garfield',113.5,208,63313,3.3]];
+  var scG = document.getElementById('sc-dots');
+  if (scG) {
+    scData.forEach(function (d) {
+      var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', d[1]); c.setAttribute('cy', d[2]); c.setAttribute('r', 4.5);
+      c.setAttribute('class', 'sdot');
+      scG.appendChild(c);
+      var h = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      h.setAttribute('cx', d[1]); h.setAttribute('cy', d[2]); h.setAttribute('r', 11);
+      h.setAttribute('class', 'hit');
+      h.addEventListener('pointermove', function (e) {
+        showTip(d[0] + ' · ' + d[4] + ' EVs/1k · $' + fmt(d[3]), e.clientX, e.clientY);
+      });
+      h.addEventListener('pointerleave', hideTip);
+      scG.appendChild(h);
+    });
+  }
+
+  var toast = document.getElementById('toast');
+  var toastTimer = 0;
+  function showToast(text) {
+    toast.textContent = text;
+    toast.style.opacity = '1';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.style.opacity = '0'; }, 1800);
+  }
+
+  function postUrl(el) {
+    var art = el.closest('article');
+    var base = location.href.split('#')[0];
+    return art ? base + '#' + art.id : base;
+  }
+  function postTitle(el) {
+    var art = el.closest('article');
+    var h = art ? art.querySelector('h2') : null;
+    return (h ? h.textContent : document.title) + ' — The Card File';
+  }
+  document.querySelectorAll('[data-share]').forEach(function (btn) {
+    var kind = btn.getAttribute('data-share');
+    if (kind === 'copy') {
+      btn.addEventListener('click', function () {
+        var u = postUrl(btn);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(u).then(function () { showToast('Link copied'); }, function () { showToast(u); });
+        } else {
+          showToast(u);
+        }
+      });
+    } else if (kind === 'fb') {
+      var wire = function () { btn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(postUrl(btn)); };
+      if (btn.tagName === 'A') { wire(); btn.addEventListener('pointerdown', wire); }
+      else btn.addEventListener('click', function () {
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href.split('#')[0]), '_blank', 'noopener');
+      });
+    } else if (kind === 'x') {
+      var wireX = function () {
+        btn.href = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(postUrl(btn)) + '&text=' + encodeURIComponent(postTitle(btn));
+      };
+      wireX(); btn.addEventListener('pointerdown', wireX);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
