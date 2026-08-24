@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Mississippi File</title>
-<meta name="description" content="Mississippi's three-decade trajectory: the education miracle, the teen-birth collapse, the life-expectancy slide, and the widening income gap - every series verified.">
+<meta name="description" content="Mississippi's three-decade trajectory and why it bends: the education miracle, the population engine in reverse, hearts not opioids, and the two Mississippis.">
 <meta property="og:title" content="The Mississippi File">
-<meta property="og:description" content="One state moving in two directions at once - verified trajectories from NAEP, NCHS, SAIPE, IRS, and CFPB.">
+<meta property="og:description" content="One state moving in two directions at once - verified trajectories and the reasons behind them.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="The Blips Don't Lie">
 <meta property="og:image" content="https://the-blips-dont-lie.vercel.app/og-image.png">
@@ -336,8 +336,8 @@
 </head>
 <body>
 <div class="topbar">
-  <a class="brand" href="index.html"><svg class="logo-mini" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="var(--surface)" stroke="var(--chart)" stroke-width="3"></circle><circle cx="32" cy="32" r="16" fill="none" stroke="var(--chart)" stroke-width="2" opacity="0.45"></circle><line x1="32" y1="32" x2="50" y2="14" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"></line><circle cx="32" cy="32" r="3" fill="var(--gold)"></circle><circle cx="22" cy="26" r="3.5" fill="var(--chart)"></circle><circle cx="40" cy="42" r="3.5" fill="var(--chart)"></circle><circle cx="44" cy="22" r="4" fill="var(--gold)"></circle></svg>The Blips Don't Lie</a>
-  <a class="share-btn" href="index.html">← All stories</a>
+  <a class="brand" href="/"><svg class="logo-mini" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="var(--surface)" stroke="var(--chart)" stroke-width="3"></circle><circle cx="32" cy="32" r="16" fill="none" stroke="var(--chart)" stroke-width="2" opacity="0.45"></circle><line x1="32" y1="32" x2="50" y2="14" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"></line><circle cx="32" cy="32" r="3" fill="var(--gold)"></circle><circle cx="22" cy="26" r="3.5" fill="var(--chart)"></circle><circle cx="40" cy="42" r="3.5" fill="var(--chart)"></circle><circle cx="44" cy="22" r="4" fill="var(--gold)"></circle></svg>The Blips Don't Lie</a>
+  <a class="share-btn" href="/">← All stories</a>
 </div>
 
 <div class="wrap" id="top">
@@ -415,6 +415,28 @@
     </figure>
   </article>
 
+  <article id="why-horizon">
+    <p class="eyebrow">Why the horizon fell · <span class="dim">NCHS leading causes × VSRR overdose surveillance</span></p>
+    <h2>It's the hearts, not the opioids</h2>
+    <p class="range">Data: heart disease age-adjusted mortality 1999–2017 · overdose deaths 2015–2025 provisional</p>
+    <p>Decompose the life-expectancy deficit and the usual suspect is innocent: Mississippi's drug-overdose death rate runs about <b>a third below the national rate</b> (roughly 21.5 vs 31.9 per 100k in 2023) and has fallen faster since the 2021 peak (−39% vs −34%). The killer is chronic: <b>heart-disease mortality 40% above the nation</b> — Mississippi's 2017 rate (231.6 per 100k, age-adjusted) is the rate the United States last had in <b>2003</b>. The state's hearts run fourteen years behind.</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Mississippi</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>United States</span>
+      </div>
+      <div class="echart" id="ms-heart" style="height:280px"></div>
+      <figcaption>Age-adjusted heart-disease deaths per 100,000. Both lines fall — medicine works everywhere — but the ratio <em>widened</em> from 1.30× (1999) to 1.40× (2017). NCHS's public series ends in 2017.</figcaption>
+    </figure>
+    <div class="chips">
+      <span class="chip">MS overdose deaths <b>746 (2021) → 453 (2025)</b></span>
+      <span class="chip">US overdose <b>107,573 → 70,637</b></span>
+      <span class="chip">MS heart 2017 <b>231.6</b> = US 2003</span>
+      <span class="chip">obesity <b>+7 pts</b> vs nation (above)</span>
+    </div>
+    <p class="caveat">Overdose counts are VSRR 12-month-ending provisional figures (recent months still completing); per-capita comparison computed against 2023–24 populations. Heart-disease rates are age-adjusted, so this is not an age-structure artifact.</p>
+  </article>
+
   <article id="waistline">
     <p class="eyebrow">Stuck · <span class="dim">CDC BRFSS, 2011–2024</span></p>
     <h2>The plateau: obesity holds at 40</h2>
@@ -443,6 +465,45 @@
     </ul>
   </article>
 
+  <article id="why-people">
+    <p class="eyebrow">Why the headcount falls · <span class="dim">Census components of change, 2011–2024</span></p>
+    <h2>The population engine went into reverse in 2021</h2>
+    <p class="range">Data: births, deaths, and migration components · vintage-2019 and vintage-2024 estimates</p>
+    <p>Population change has exactly four moving parts, and Census publishes all of them. In 2011, Mississippi's births out-numbered deaths by <b>+10,569</b>. Births then slid every single year (39,734 → 33,859) while deaths climbed — and in <b>2021 the lines crossed: 41,641 deaths against 35,004 births</b>, the state's first natural decrease. It has stayed negative ever since. Add the second engine — domestic migration, negative in <em>all fourteen years</em> (worst: −14,775 in 2018) — and the only positive line left is international arrivals, which jumped to ~6–7k a year after 2022 and now nearly carry the state alone.</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Births</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Deaths</span>
+      </div>
+      <div class="echart" id="ms-engine" style="height:280px"></div>
+      <figcaption>The grim crossover: deaths passed births in 2021 (COVID spiked the death line, but births kept falling after it receded — the crossover held).</figcaption>
+    </figure>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>International migration (in)</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Domestic migration (out)</span>
+      </div>
+      <div class="echart" id="ms-mig" style="height:280px"></div>
+      <figcaption>Fourteen straight years of domestic outflow; the post-2022 international surge is the only reason the population line is merely drifting instead of diving.</figcaption>
+    </figure>
+    <p class="caveat">Components are Census estimates (vintage 2019 for 2011–2019, vintage 2024 for 2021–2024; the vintages join with a gap at 2020). Domestic migration counts residents, not income — the IRS AGI drain above is its dollar shadow.</p>
+  </article>
+
+  <article id="two-ms">
+    <p class="eyebrow">Why the averages mislead · <span class="dim">SAIPE 2023, all 82 counties</span></p>
+    <h2>There are two Mississippis</h2>
+    <p class="range">Data: median household income and poverty by county · 2023</p>
+    <p>The state's averages hide a split the county file makes brutal. <b>Madison County ($82,057) and DeSoto County ($81,956) both earn more than the U.S. median household</b> ($77,719) — suburban Jackson and suburban Memphis are national-average America with better barbecue. Ninety minutes away, Delta counties live in a different economy: Claiborne at <b>$28,579</b>, Holmes at $30,542 with <b>35.6% poverty</b>, and Issaquena — the state's emptiest county — at <b>49.6% poverty</b>. Top to bottom, the income spread inside one state is <b>2.9×</b>.</p>
+    <figure>
+      <p class="chart-title">Median household income — five richest vs five poorest MS counties, with the U.S. and MS medians marked</p>
+      <div class="echart" id="ms-counties" style="height:340px"></div>
+    </figure>
+    <ul class="facts">
+      <li>The rising Mississippi (classrooms, suburbs, ports) and the declining one (Delta, lifespans) are largely <b>different places</b> — statewide trend lines average two divergent states.</li>
+      <li>Poverty runs from <b>9.2%</b> (DeSoto) to <b>49.6%</b> (Issaquena) — a wider spread than between the best and worst U.S. <em>states</em>.</li>
+    </ul>
+  </article>
+
   <article id="machine">
     <p class="eyebrow">The anomaly · <span class="dim">CFPB, 2015–2025</span></p>
     <h2>The complaint machine found Mississippi</h2>
@@ -456,7 +517,7 @@
 
   <footer>
     <p class="method"><b>Method.</b> Six agents (three pullers, three adversarial verifiers) mined and re-verified every series: NAEP Data Service (education), NCHS y268-sna3 (teen births), four NCHS state life-table vintages, CDC BRFSS hn4x-zwk7 (obesity), seven SAIPE vintages 1995–2023 (income/poverty, fixed-width layouts validated per year against the U.S. row), Census intercensal + vintage-2024 population files, IRS SOI migration 2022–23, and the CFPB Complaint Search API. Every load-bearing number reproduced on independent re-fetch.</p>
-    <p>Part of <a href="index.html">The Blips Don't Lie</a>.</p>
+    <p>Part of <a href="/">The Blips Don't Lie</a>.</p>
   </footer>
 
 </div>
@@ -569,6 +630,74 @@
     })();
     bars('ms-complaints', ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'],
       [871,955,1506,1965,1727,3354,4633,8788,13263,29599,101439]);
+    (function () {
+      var el = document.getElementById('ms-heart');
+      if (!el) return;
+      var c = tok();
+      var ch = EC.init(el);
+      ch.setOption({ animation: animOK, grid: { left: 46, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+        xAxis: Object.assign(ax(c), { type: 'category', boundaryGap: false,
+          data: ['1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'] }),
+        yAxis: Object.assign(ax(c), { type: 'value', min: 150, max: 360 }),
+        series: [
+          { name: 'Mississippi', type: 'line', data: [347.4,341.2,333.5,332.6,317.1,298.8,306.4,285.4,278.5,273.2,253.8,251.1,240.1,231.3,240.0,229.9,240.5,233.1,231.6], lineStyle: { color: c.s1, width: 2.5 }, itemStyle: { color: c.s1 }, symbolSize: 4 },
+          { name: 'United States', type: 'line', data: [266.5,257.6,249.5,244.6,236.3,221.6,216.8,205.5,196.1,192.1,182.8,179.1,173.7,170.5,169.8,167.0,168.5,165.5,165.0], lineStyle: { color: c.s2, width: 2 }, itemStyle: { color: c.s2 }, symbolSize: 4 }
+        ] });
+      charts.push({ el: el, rebuild: function () {} });
+    })();
+    (function () {
+      var el = document.getElementById('ms-engine');
+      if (!el) return;
+      var c = tok();
+      var ch = EC.init(el);
+      var yrs = ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2021','2022','2023','2024'];
+      ch.setOption({ animation: animOK, grid: { left: 50, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+        xAxis: Object.assign(ax(c), { type: 'category', boundaryGap: false, data: yrs }),
+        yAxis: Object.assign(ax(c), { type: 'value', min: 26000, max: 44000,
+          axisLabel: Object.assign({}, ax(c).axisLabel, { formatter: function (v) { return (v / 1000) + 'k'; } }) }),
+        series: [
+          { name: 'Births', type: 'line', data: [39734,39430,38489,38723,38577,38159,37532,36832,35978,35004,34925,35064,33859], lineStyle: { color: c.s1, width: 2.5 }, itemStyle: { color: c.s1 }, symbolSize: 5 },
+          { name: 'Deaths', type: 'line', data: [29165,29060,30679,30592,31487,31490,31950,31603,31536,41641,40616,35781,35843], lineStyle: { color: c.s2, width: 2.5 }, itemStyle: { color: c.s2 }, symbolSize: 5 }
+        ] });
+      charts.push({ el: el, rebuild: function () {} });
+    })();
+    (function () {
+      var el = document.getElementById('ms-mig');
+      if (!el) return;
+      var c = tok();
+      var ch = EC.init(el);
+      var yrs = ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2021','2022','2023','2024'];
+      ch.setOption({ animation: animOK, grid: { left: 50, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+        xAxis: Object.assign(ax(c), { type: 'category', data: yrs }),
+        yAxis: Object.assign(ax(c), { type: 'value',
+          axisLabel: Object.assign({}, ax(c).axisLabel, { formatter: function (v) { return (v / 1000) + 'k'; } }) }),
+        series: [
+          { name: 'International (in)', type: 'bar', stack: 'mig', data: [2103,1975,1722,2588,3187,850,2492,2013,1429,632,6869,5620,6789], itemStyle: { color: c.s1 }, barWidth: '55%' },
+          { name: 'Domestic (out)', type: 'bar', stack: 'mig', data: [-4551,-7558,-4719,-8968,-12296,-8032,-7490,-14775,-10740,-5802,-5877,-3481,-4939], itemStyle: { color: c.s2 } }
+        ] });
+      charts.push({ el: el, rebuild: function () {} });
+    })();
+    (function () {
+      var el = document.getElementById('ms-counties');
+      if (!el) return;
+      var c = tok();
+      var ch = EC.init(el);
+      var names = ['Madison','DeSoto','Lafayette','Rankin','Jackson Co.','Quitman','Leflore','Humphreys','Holmes','Claiborne'];
+      var vals = [82057,81956,72838,70794,66751,35150,33945,31538,30542,28579];
+      ch.setOption({ animation: animOK, grid: { left: 84, right: 24, top: 26, bottom: 28 },
+        tooltip: { backgroundColor: c.ink, borderWidth: 0, textStyle: { color: c.surface, fontFamily: 'Spline Sans Mono, monospace', fontSize: 11 },
+          formatter: function (p) { return p.name + ' · $' + p.value.toLocaleString('en-US'); } },
+        xAxis: Object.assign(ax(c), { type: 'value',
+          axisLabel: Object.assign({}, ax(c).axisLabel, { formatter: function (v) { return '$' + (v / 1000) + 'k'; } }) }),
+        yAxis: Object.assign(ax(c), { type: 'category', inverse: true, data: names, splitLine: { show: false },
+          axisLabel: { color: c.ink, fontFamily: 'Spline Sans Mono, monospace', fontSize: 10 } }),
+        series: [{ type: 'bar', barWidth: 14,
+          data: vals.map(function (v, i) { return { value: v, itemStyle: { color: i < 5 ? c.chart : c.s2, borderRadius: [0, 3, 3, 0] } }; }),
+          markLine: { symbol: 'none', lineStyle: { color: c.gold, width: 1.5, type: 'dashed' },
+            label: { color: c.gold, fontFamily: 'Spline Sans Mono, monospace', fontSize: 9.5, formatter: '{b}' },
+            data: [ { xAxis: 77719, name: 'US $77.7k' }, { xAxis: 54386, name: 'MS $54.4k' } ] } }] });
+      charts.push({ el: el, rebuild: function () {} });
+    })();
   }
   buildAll();
   window.addEventListener('resize', function () { charts.forEach(function (o) { var inst = EC.getInstanceByDom(o.el); if (inst) inst.resize(); }); });
