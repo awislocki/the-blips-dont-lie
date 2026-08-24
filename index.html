@@ -6,12 +6,16 @@
 <title>The Card File</title>
 <meta name="description" content="Live numbers pulled from the federal data drawers - every figure queried from a government API, every cross-dataset claim independently verified before publication.">
 <meta property="og:title" content="The Card File">
-<meta property="og:description" content="Verified data stories pulled live from CFPB, Census, NASA, USGS, Treasury, FDIC, IRS, and more.">
+<meta property="og:description" content="20 verified data stories pulled live from CFPB, Census, NASA, USGS, Treasury, FDIC, and IRS APIs.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Card File">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://the-card-file.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Card File">
-<meta name="twitter:description" content="Verified data stories pulled live from government APIs.">
+<meta name="twitter:description" content="20 verified data stories pulled live from government APIs.">
+<meta name="twitter:image" content="https://the-card-file.vercel.app/og-image.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128451;</text></svg>"><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap">
 <style>
@@ -294,31 +298,59 @@
     pointer-events: none;
   }
   @media (prefers-reduced-motion: reduce) { #tip, #toast { transition: none; } }
+
+  .topbar .brand { display: inline-flex; align-items: center; }
+  .logo-mini { width: 21px; height: 21px; margin-right: 0.5rem; flex: none; }
+  .hero { position: relative; overflow: hidden; border-bottom: 3px double var(--line); margin: -2.2rem -1.05rem 0; padding: 3rem 1.05rem 2.2rem; }
+  #globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.92; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 55%, var(--bg) 97%); }
+  .hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.1rem; will-change: transform; }
+  .lockup { display: flex; align-items: center; gap: 1.1rem; }
+  .logo-mark { width: clamp(56px, 13vw, 84px); height: auto; flex: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
+  .globe-cap { font-family: "Spline Sans Mono", monospace; font-size: 0.68rem; color: var(--muted); max-width: 34rem; }
+  @media (prefers-reduced-motion: reduce) { .hero-inner { transform: none !important; } }
+  .range {
+    font-family: "Spline Sans Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: -0.35rem;
+  }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <a class="brand" href="#top">🗃️ The Card File</a>
+  <a class="brand" href="#top"><svg class="logo-mini" viewBox="0 0 64 64" aria-hidden="true"><g transform="rotate(-4 32 32)"><rect x="7" y="27" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--chart)" stroke-width="3"></rect><rect x="12" y="18" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--chart)" stroke-width="3"></rect><rect x="17" y="9" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--gold)" stroke-width="3"></rect><rect x="17" y="9" width="16" height="7" rx="2" fill="var(--gold)"></rect></g></svg>The Card File</a>
   <button class="share-btn fb" data-share="fb" data-target="top" type="button" aria-label="Share this site on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Share</button>
 </div>
 
 <div class="wrap" id="top">
 
-  <header class="cover">
-    <p class="eyebrow">An occasional data publication · <span class="dim">updated 2026-08-24</span></p>
-    <h1>The Card File</h1>
-    <p class="tagline">Live numbers pulled from the federal data drawers — every figure queried from a government API, and every cross-dataset claim recomputed by an independent verifier before it appears here.</p>
-    <div class="meta-row"><span>source: catalog.data.gov + 12 agency APIs</span><span>no estimates, no memory — fetched values only</span></div>
-    <div class="catalog-strip">
-      <div class="cs"><span class="n">552,271</span><span class="l">datasets in catalog</span></div>
-      <div class="cs"><span class="n">12</span><span class="l">APIs queried live</span></div>
-      <div class="cs"><span class="n">19</span><span class="l">stories so far</span></div>
-      <div class="cs"><span class="n">2×</span><span class="l">errors caught by verifiers</span></div>
+  <header class="hero" id="hero">
+    <canvas id="globe" aria-hidden="true"></canvas>
+    <div class="hero-inner" id="hero-inner">
+      <p class="eyebrow">An occasional data publication · <span class="dim">updated 2026-08-24</span></p>
+      <div class="lockup">
+        <svg class="logo-mark" viewBox="0 0 64 64" role="img" aria-label="The Card File logo: a stack of index cards"><g transform="rotate(-4 32 32)"><rect x="7" y="27" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--chart)" stroke-width="2.5"></rect><rect x="12" y="18" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--chart)" stroke-width="2.5"></rect><rect x="17" y="9" width="40" height="28" rx="3" fill="var(--surface)" stroke="var(--gold)" stroke-width="2.5"></rect><rect x="17" y="9" width="16" height="7" rx="2" fill="var(--gold)"></rect><line x1="23" y1="22" x2="51" y2="22" stroke="var(--chart)" stroke-width="2"></line><line x1="23" y1="28" x2="45" y2="28" stroke="var(--chart)" stroke-width="2" opacity="0.55"></line></g></svg>
+        <h1>The Card File</h1>
+      </div>
+      <p class="tagline">Live numbers pulled from the federal data drawers — every figure queried from a government API, and every cross-dataset claim recomputed by an independent verifier before it appears here.</p>
+      <p class="globe-cap">The globe behind this text is real data: every gold point is a witnessed meteorite fall, every green point a later find — watch Antarctica burn green at the bottom.</p>
+      <div class="meta-row"><span>source: catalog.data.gov + 12 agency APIs</span><span>no estimates, no memory — fetched values only</span></div>
+      <div class="catalog-strip">
+        <div class="cs"><span class="n">552,271</span><span class="l">datasets in catalog</span></div>
+        <div class="cs"><span class="n">12</span><span class="l">APIs queried live</span></div>
+        <div class="cs"><span class="n">20</span><span class="l">stories so far</span></div>
+        <div class="cs"><span class="n">2×</span><span class="l">errors caught by verifiers</span></div>
+      </div>
     </div>
   </header>
 
   <nav class="toc" aria-label="Contents">
+    <p class="tlabel">Intermission</p>
+    <a href="#lightning-round">The Lightning Round: twelve facts, zero mercy</a>
     <p class="tlabel">Deep relations — three sources per story</p>
     <a href="#r4-migration">Florida gained $20.6 billion in income last year without anyone earning it there</a>
     <a href="#r4-quake-capitals">America's most famous earthquake zones had zero earthquakes</a>
@@ -343,9 +375,37 @@
     <a href="#r1-squirrels">The government knows how many squirrels moaned at it</a>
   </nav>
 
+  <article id="lightning-round">
+    <p class="eyebrow">Intermission · <span class="dim">multiple sources, no mercy</span></p>
+    <h2>The Lightning Round: twelve facts, zero mercy</h2>
+    <p class="range">Data: mixed vintages 1996–2026 · debt window Jul 20 – Aug 20, 2026</p>
+    <p>Welcome back. Every number below is real, verified, and cross-referenced from at least two federal sources, because if we're going to be like this, we're going to be <em>accurate</em> about it. Debt figures computed from Treasury's July 20 – August 20 window. No, you can't phone a friend.</p>
+    <div class="ladder">
+      <div class="lrow"><span class="lm">DEBT</span><span class="ln">$166,149</span><span class="lc">added to the national debt every second over the past month. In the time it took you to read this sentence, the government borrowed a Ferrari.</span></div>
+      <div class="lrow"><span class="lm">GEOLOGY</span><span class="ln">$2.6B</span><span class="lc">of new federal debt per magnitude-5 earthquake, at the planet's usual 5.5 quakes a day. One of these is considered a natural disaster.</span></div>
+      <div class="lrow"><span class="lm">CIVICS</span><span class="ln">27</span><span class="lc">states have fewer residents than TransUnion has CFPB complaints (4.73M). Wyoming, Vermont, Alaska: a credit bureau's inbox outranks you.</span></div>
+      <div class="lrow"><span class="lm">WILDLIFE</span><span class="ln">5,704</span><span class="lc">federal complaints on file for every squirrel the government has ever counted. The squirrels, for the record, filed none.</span></div>
+      <div class="lrow"><span class="lm">TEMPO</span><span class="ln">10.4</span><span class="lc">complaints per minute filed with the CFPB in 2025. Central Park's squirrels moaned three times in a month. One of these populations is coping.</span></div>
+      <div class="lrow"><span class="lm">SPACE</span><span class="ln">$875M</span><span class="lc">is what each of humanity's 45,716 cataloged meteorites would need to fetch to pay off the national debt. Including the ones that weigh 33 grams.</span></div>
+      <div class="lrow"><span class="lm">BORDERS</span><span class="ln">3.05×</span><span class="lc">the entire population of the United States has walked or driven through one San Diego border crossing since 1996. San Ysidro does not validate parking.</span></div>
+      <div class="lrow"><span class="lm">COMMERCE</span><span class="ln">2.4 sec</span><span class="lc">between trucks entering the United States, around the clock, all of 2024. A pedestrian arrives from Mexico every 0.74 seconds. From Canada: every 66 seconds. Canada walks less.</span></div>
+      <div class="lrow"><span class="lm">MOTORING</span><span class="ln">109</span><span class="lc">Teslas registered in Washington State for every meteorite fall witnessed in recorded human history. Both arrive suddenly and depreciate on contact.</span></div>
+      <div class="lrow"><span class="lm">FINANCE</span><span class="ln">$4,893</span><span class="lc">is what the average tax return moving to Florida has left over after covering its $117,646 share of the national debt. Enough for one year of homeowners-insurance increases.</span></div>
+      <div class="lrow"><span class="lm">GEOGRAPHY</span><span class="ln">91.9%</span><span class="lc">of a North Dakotan's per-person debt share arrives back as federal award money every single year ($108,117 of $117,646). The other 8.1% is called "everyone else."</span></div>
+      <div class="lrow"><span class="lm">SCHOLARSHIP</span><span class="ln">0.0033%</span><span class="lc">of data.gov's 552,271 datasets were read to produce this publication (18 of them). We are, statistically, the most thorough people who have ever looked at almost nothing.</span></div>
+    </div>
+    <ul class="facts">
+      <li>Bonus, New York edition: in 25 years, the New York area recorded <b>one</b> magnitude-4.5 earthquake and <b>462,105</b> crashes caused by drivers not looking at the road. Nature remains a minor contributor.</li>
+      <li>Bonus, mortality edition: U.S. life expectancy once fell 11.8 years in twelve months (1918), then spent 2010–2018 gaining exactly 0.0. Consistency takes many forms.</li>
+    </ul>
+    <p class="caveat">All inputs verified in earlier stories; derived figures are straight division, shown honestly: debt accrual from Treasury debt-to-penny 2026-07-20 → 2026-08-20 ($445.0B over 31 days); quake cadence from the trailing-365-day USGS count; pedestrian cadences are 30.5-year averages.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
   <article id="r4-migration">
     <p class="eyebrow">Deep relations · <span class="dim">IRS SOI × Census × SAIPE</span></p>
     <h2>Florida gained $20.6 billion in income last year without anyone earning it there</h2>
+    <p class="range">Data: IRS filing years 2022–23 · SAIPE 2023 · pulled 2026-08-24</p>
     <p>The IRS quietly publishes where every tax return moved between filings, with adjusted gross income attached. The 2022–23 vintage says the great income migration is real and lopsided: <b>Florida netted +$20.6B in AGI</b> from interstate movers — nearly 4× second-place Texas — while <b>California lost $11.9B</b> (about $304 per resident) and New York lost $9.9B.</p>
     <figure>
       <p class="chart-title">Net adjusted gross income from interstate movers, $B (IRS 2022–23)</p>
@@ -378,6 +438,7 @@
   <article id="r4-quake-capitals">
     <p class="eyebrow">Deep relations · <span class="dim">USGS × city geography × Census</span></p>
     <h2>America's most famous earthquake zones had zero earthquakes</h2>
+    <p class="range">Data: Aug 2001 – Aug 2026 · Census vintage 2024 · pulled 2026-08-24</p>
     <p>Count every M4.5+ earthquake within 200 km of twelve major metros over 25 years and rank them. <b>Anchorage: 159</b> — including the M7.1 that hit the city in November 2018. San Diego: 100. Los Angeles: 57. And the two most famous "Big One" zones outside California? <b>Memphis and St. Louis, sitting on the New Madrid fault: zero. Each.</b> Portland and Seattle, atop M9-capable Cascadia: four and six.</p>
     <figure>
       <p class="chart-title">M4.5+ earthquakes within 200 km, 2001–2026</p>
@@ -408,6 +469,7 @@
   <article id="r4-life-income">
     <p class="eyebrow">Deep relations · <span class="dim">CDC/NCHS × SAIPE × Census</span></p>
     <h2>Nine years of life separate Hawaii and Mississippi — and income tracks it at r = 0.79</h2>
+    <p class="range">Data: life expectancy 2021 · income 2023 · pulled 2026-08-24</p>
     <p>Join every state's 2021 life expectancy at birth (NCHS) to its median household income (SAIPE) and the strongest correlation in this entire publication appears: <b>r = 0.79</b>. A newborn in Hawaii (79.9 years, $96,716 median income) is expected to outlive one in Mississippi (70.9 years, $54,386) by <b>nine full years</b>.</p>
     <div class="chips">
       <span class="chip">Hawaii <b>79.9 yrs</b> · $96.7k</span>
@@ -429,6 +491,7 @@
   <article id="r4-complaint-poverty">
     <p class="eyebrow">Deep relations · <span class="dim">CFPB × SAIPE × Census</span></p>
     <h2>We suspected poverty drives the complaint belt. The data says barely.</h2>
+    <p class="range">Data: complaints 2025 · income 2023 · population 2024 · pulled 2026-08-24</p>
     <p>The complaint-per-capita map looks like a poverty map — Mississippi, Louisiana, Alabama all near the top. So we tested it: state median income vs 2025 complaints per 1,000 residents, all 51 jurisdictions. The correlation is <b>r = −0.11</b> (−0.17 without outlier DC). Income explains <b>1–3% of the variance</b>. The poorest ten states do average more complaints than the richest ten (14.2 vs 10.9 per 1,000), but that gap is carried almost entirely by one regional cluster.</p>
     <ul class="facts">
       <li>The residuals name the real story: <b>Georgia files 26 more complaints per 1,000 than its income predicts</b>, Florida +22, Mississippi +21 — while equally poor West Virginia (3.5) and New Mexico (4.0) barely complain at all. Poverty doesn't produce complaint volume; a Southeast credit-dispute economy does.</li>
@@ -442,6 +505,7 @@
   <article id="r4-federal-money">
     <p class="eyebrow">Deep relations · <span class="dim">USASpending × Census × SAIPE</span></p>
     <h2>Federal award money per resident has no relationship to state income at all</h2>
+    <p class="range">Data: latest 12 months of award obligations · income 2023 · pulled 2026-08-24</p>
     <p>USASpending totals the last twelve months of federal award obligations by recipient state; divide by population and correlate with income and you get the flattest line in this publication: <b>r = −0.01</b>. Rich and poor states alike sit at both extremes — the per-resident spread runs <b>14.6×</b>, from North Dakota's $108,117 down to Utah's $7,404, with income explaining none of it.</p>
     <figure>
       <p class="chart-title">Federal award dollars per resident, latest 12 months — top 8 states</p>
@@ -469,6 +533,7 @@
   <article id="r3-georgia">
     <p class="eyebrow">Cross-inference · <span class="dim">CFPB × Census</span></p>
     <h2>The complaint machine has a home address, and it's Georgia</h2>
+    <p class="range">Data: complaints 2019 and 2025 · population 2024 · pulled 2026-08-21</p>
     <p>Divide 2025's 5.44M consumer complaints by each state's population and the geography snaps into focus: <b>Georgia files 38.2 CFPB complaints per 1,000 residents</b> — 2.4× the national rate of 15.9, and 22× Vermont's 1.7. The post-2019 explosion wasn't evenly national either: while the U.S. grew 19.6×, <b>Mississippi grew 58.7×</b>, Alabama 35.8×, Louisiana 31.3× — the credit-repair complaint wave has a regional center of gravity in the South.</p>
     <figure>
       <p class="chart-title">CFPB complaints per 1,000 residents, 2025 — top 10 states</p>
@@ -498,6 +563,7 @@
   <article id="r3-banks">
     <p class="eyebrow">Cross-inference · <span class="dim">CFPB × FDIC</span></p>
     <h2>Size-adjust the banks and the villain list flips upside down</h2>
+    <p class="range">Data: complaints 2023–2025 · FDIC deposits latest quarter · pulled 2026-08-21</p>
     <p>Raw counts crowned Capital One the most-complained-about bank (71,613 complaints, 2023–2025). But banks aren't the same size. Divide each bank's complaints by its FDIC-reported deposits and the card issuers sweep the podium: <b>Synchrony logs 360 complaints per $1B of deposits — nearly 20× PNC's 18</b> — while the megabanks everyone loves to hate land at the bottom of the table.</p>
     <figure>
       <p class="chart-title">Complaints per $1B of deposits, 2023–2025</p>
@@ -528,6 +594,7 @@
   <article id="r3-witnesses">
     <p class="eyebrow">Cross-inference · <span class="dim">NASA × human geography</span></p>
     <h2>The map of falling stars is really a map of who was watching</h2>
+    <p class="range">Data: full meteorite catalog, antiquity to 2013 vintage · pulled 2026-08-21</p>
     <p>Split the meteorite catalog by how each rock entered it and you get two opposite planets. <b>86.6% of witnessed falls landed between 0° and 60°N</b> — the band where most humans live. <b>71.1% of found meteorites sit below 60°S</b>, in Antarctica, where nobody lives at all. Median latitude of a witnessed fall: <b>+36°</b> (roughly Nashville). Median latitude of a find: <b>−73°</b> (deep Antarctica). Same sky, same rain of rocks — sorted entirely by who was looking, and where searching works.</p>
     <figure>
       <p class="chart-title">Where meteorites enter the record, by latitude band</p>
@@ -570,6 +637,7 @@
   <article id="r3-darkness">
     <p class="eyebrow">Cross-inference · <span class="dim">NYPD × seasonal daylight</span></p>
     <h2>We tested whether darkness causes the 5 PM cyclist peak. It doesn't.</h2>
+    <p class="range">Data: crashes Jul 2012 – Aug 2026, winter vs summer · pulled 2026-08-21</p>
     <p>A good hypothesis, killed by data — the fun kind. If darkness drove the evening injury peak, winter (sunset ~4:45 PM) should concentrate injuries into the dark 5–7 PM commute while summer spreads them across its long bright evenings. The seasons refuse to cooperate: <b>both peak at exactly 18:00</b>, winter's 5–7 PM share beats summer's by only 1.2 points (17.5% vs 16.3%), and the 7–10 PM shares are <b>identical at 19.5%</b>. The curves are near-twins despite summer logging 2.5× the injuries.</p>
     <figure>
       <p class="chart-title">Share of each season's cyclist injuries, by hour</p>
@@ -616,6 +684,7 @@
   <article id="r3-ev-income">
     <p class="eyebrow">Cross-inference · <span class="dim">WA EV registry × Census income</span></p>
     <h2>EV adoption is an income story — r = 0.75 — except where it's a ferry story</h2>
+    <p class="range">Data: registry snapshot Aug 2026 · income 2023 · population 2024</p>
     <p>Join Washington's 39 counties' EV counts to their median household incomes and the correlation is strong: <b>Pearson r = 0.75</b> (income explains ~56% of the variance in EVs per 1,000 residents). Then the residuals get interesting: the #1 EV county isn't rich-tech King — it's <b>San Juan, a mid-income archipelago</b> where every gallon of gas arrives by ferry.</p>
     <figure>
       <p class="chart-title">39 counties: median household income vs EVs per 1,000 residents</p>
@@ -652,6 +721,7 @@
   <article id="r3-debt">
     <p class="eyebrow">Cross-inference · <span class="dim">Treasury × Census</span></p>
     <h2>Your share of the national debt, computed to the cent</h2>
+    <p class="range">Data: debt 2026-08-19 vs 2000-01-10 · population 2024 and Census 2000</p>
     <div>
       <div class="hero-n">$117,646.01</div>
       <p class="hero-cap">gross federal debt per U.S. resident · debt as of 2026-08-19</p>
@@ -671,6 +741,7 @@
   <article id="r2-border">
     <p class="eyebrow">Dispatch · <span class="dim">BTS · Border Crossing Entry Data, 1996–present</span></p>
     <h2>The border's busiest year was 1999</h2>
+    <p class="range">Data: Jan 1996 – Jul 2026 · pulled 2026-08-21</p>
     <p>Every person, truck, bus, and train entering the U.S. by land since 1996, monthly, port by port — 275,901 rows through July 2026. The surprise isn't the pandemic dip. It's that people-crossings peaked at <b>387.7 million in 1999</b> and had already fallen 38% before COVID existed. Freight never got the memo: index both to 1996 and the lines tear apart.</p>
     <figure>
       <p class="chart-title">Land crossings into the U.S., indexed to 1996 = 100</p>
@@ -721,6 +792,7 @@
   <article id="r2-crashes">
     <p class="eyebrow">Dispatch · <span class="dim">NYC Open Data · Motor Vehicle Collisions, 2.27M crashes</span></p>
     <h2>Reported crashes fell by two-thirds. Deaths didn't fall at all.</h2>
+    <p class="range">Data: Jul 2012 – Aug 2026 · pulled 2026-08-21</p>
     <p>New York City logs every police-reported crash — 2,269,187 since mid-2012. Reported crashes peaked at <b>231,564 in 2018</b> and have fallen every year since, to 85,546 in 2025. Deaths refused to follow: 231 people died in 2018, and <b>229 died in 2025</b>. Divide one by the other and the line is blunt:</p>
     <figure>
       <p class="chart-title">Deaths per 1,000 reported crashes</p>
@@ -806,6 +878,7 @@
   <article id="r2-meteorites">
     <p class="eyebrow">Dispatch · <span class="dim">NASA · Meteorite Landings</span></p>
     <h2>Half of everything we've caught falling from space was picked up in Antarctica</h2>
+    <p class="range">Data: full catalog, 45,716 records to 2013 vintage · pulled 2026-08-21</p>
     <div>
       <div class="hero-n">45,716</div>
       <p class="hero-cap">documented meteorites — only 1,107 were seen falling</p>
@@ -838,6 +911,7 @@
   <article id="r2-quakes">
     <p class="eyebrow">Dispatch · <span class="dim">USGS · Earthquake Catalog, live API</span></p>
     <h2>Earth had 2,018 magnitude-5 earthquakes this year. That's normal.</h2>
+    <p class="range">Data: trailing 365 days, Aug 2025 – Aug 2026 · pulled 2026-08-21</p>
     <p>The USGS event API answers in real time, so this story is a snapshot of the planet's trailing 365 days. The ladder is the lesson — each magnitude step up releases ~32× more energy and happens roughly a tenth as often:</p>
     <div class="ladder">
       <div class="lrow"><span class="lm">M5+</span><span class="ln">2,018</span><span class="lc">about 5.5 per day, somewhere on Earth</span></div>
@@ -856,6 +930,7 @@
   <article id="r1-cfpb">
     <p class="eyebrow">Dispatch · <span class="dim">CFPB · Consumer Complaint Database</span></p>
     <h2>The federal complaint box has become a machine — and the machine is mostly one complaint</h2>
+    <p class="range">Data: Dec 2011 – Aug 2026 · pulled 2026-08-21</p>
     <div>
       <div class="hero-n">17,242,643</div>
       <p class="hero-cap">complaints in the public database at time of pull</p>
@@ -924,6 +999,7 @@
   <article id="r1-lifeexp">
     <p class="eyebrow">Dispatch · <span class="dim">CDC/NCHS · Life expectancy at birth, 1900–2018</span></p>
     <h2>1918 erased eleven years of life expectancy in twelve months</h2>
+    <p class="range">Data: annual series 1900–2018 · pulled 2026-08-21</p>
     <p>One tidy table, 119 years of American life. In 1917, a newborn could expect 50.9 years. In 1918 — influenza plus the war — that number collapsed to <b>39.1</b>. It is the most violent single move in the series, and the rebound is just as strange: 1919 snapped back to 54.7, <em>higher than before the pandemic</em>, because the flu had already taken the most vulnerable.</p>
     <figure>
       <p class="chart-title">U.S. life expectancy at birth, both sexes, 1900–2018</p>
@@ -971,6 +1047,7 @@
   <article id="r1-ev">
     <p class="eyebrow">Dispatch · <span class="dim">Washington State DOL · Electric Vehicle Population</span></p>
     <h2>Watching a technology arrive, one license plate at a time</h2>
+    <p class="range">Data: registry snapshot Aug 2026 · model years 1999–2027 · pulled 2026-08-21</p>
     <p>Washington publishes a row for every EV currently registered in the state — <b>294,193</b> at time of pull. Because each row carries a model year, the registry doubles as a fossil record of adoption: a decade of polite growth, then a wall.</p>
     <figure>
       <p class="chart-title">EVs on Washington roads today, by model year</p>
@@ -1025,6 +1102,7 @@
   <article id="r1-squirrels">
     <p class="eyebrow">Dispatch · <span class="dim">NYC Open Data · 2018 Central Park Squirrel Census</span></p>
     <h2>The government knows how many squirrels moaned at it</h2>
+    <p class="range">Data: October 2018 census · pulled 2026-08-21</p>
     <p>In October 2018, volunteer sighters swept Central Park hectare by hectare and logged <b>3,023 squirrel encounters</b>, each with coordinates, fur color, and a full behavioral readout. It is the most lovingly over-instrumented dataset in the catalog, and it's real, and it's on data.gov.</p>
     <div class="chips">
       <span class="chip"><span class="swatch" style="background:#8E9196"></span>Gray <b>2,473</b> · 82%</span>
@@ -1227,6 +1305,86 @@
     var h = art ? art.querySelector('h2') : null;
     return (h ? h.textContent : document.title) + ' — The Card File';
   }
+  var MET = [[50.8,6.1,1],[-31.6,-65.2,1],[39.9,42.8,1],[36.2,37.1,1],[27.7,78.2,1],[25.2,105.2,1],[31.8,-97,1],[36.2,3.7,1],[48.6,38,1],[30.4,78.2,1],[52.6,-1.3,1],[39.8,-101.2,1],[39.1,-89.2,1],[42.5,-73.8,1],[53.1,23.2,1],[60.4,25.8,1],[12.5,0.7,1],[17.7,-11.4,1],[53.9,-112.9,1],[26.8,82.8,1],[-7,-40.2,1],[38.5,27,1],[45.1,8.3,1],[46.7,1,1],[54.8,61.1,1],[40.9,-79.7,1],[43.8,-84.5,1],[54.6,-6.2,1],[42,59.7,1],[25.7,73.6,1],[-31.9,-60.5,1],[21.9,82.4,1],[42.5,18.4,1],[26.2,82,1],[25.4,-97.4,1],[47.9,7.4,1],[43.4,-94.8,1],[36.1,-81.4,1],[33,-84,1],[44.3,0.4,1],[12.8,11,1],[57.4,37.6,1],[43.7,45.4,1],[37.1,118.4,1],[13.8,78.6,1],[26.8,82.5,1],[55.5,13.8,1],[64.4,21.2,1],[26.5,106.6,1],[-23.2,-51.8,1],[-31.2,-58,1],[39.7,105.8,1],[55.7,24.4,1],[38.7,-7.3,1],[55.4,53.2,1],[31.6,65.8,1],[12.9,7.2,1],[39.3,31.8,1],[29.5,72.3,1],[14,28,1],[11.6,24.7,1],[35.7,139.8,1],[51.2,31.7,1],[44.5,39.3,1],[44.3,5.6,1],[46.2,126.2,1],[-25.7,28.4,1],[52.6,-8.8,1],[38.7,-77.2,1],[24.8,103.3,1],[-28.8,32,1],[12.8,9.4,1],[21,76.1,1],[41.9,-91.6,1],[-20,57,1],[53.2,13.2,1],[46.5,25.7,1],[46.2,16.1,1],[56.7,23,1],[35.2,-80.5,1],[-41,145.6,1],[18.7,4.8,1],[26.1,85.5,1],[12.3,79.2,1],[-21.7,165.9,1],[15.4,35.7,1],[32.9,105.9,1],[39.7,-99.9,1],[43.3,141.9,1],[46.1,23.6,1],[38.7,-7.1,1],[58.9,9.4,1],[43.4,-5.9,1],[39.8,-91.5,1],[9.2,78.4,1],[52.3,77,1],[-10.7,35.5,1],[40,-99.2,1],[-32.9,18.7,1],[50.9,12.1,1],[49.7,14,1],[26.5,106.5,1],[28.2,70.2,1],[38.2,115.7,1],[-32.8,-65.3,1],[31.2,-99,1],[44.5,-84,1],[51.5,14.9,1],[33.5,-117.7,1],[-20.8,-49.4,1],[42.9,-74,1],[41.7,-0,1],[34.8,10.7,1],[33.7,74.8,1],[26.2,69.6,1],[55,35,1],[1.7,33.6,1],[48.4,3.9,1],[52.5,9,1],[12.7,78,1],[59.7,-134.2,1],[19.4,43.7,1],[32.9,119,1],[-6.7,106.6,1],[43.6,1.4,1],[61.3,12.3,1],[57.2,65.5,1],[46.9,7.2,1],[47.1,7.6,1],[56.1,77.3,1],[54.2,-111.7,1],[45.6,-122.4,1],[-26,30,1],[35.1,113.3,1],[14.3,79.8,1],[27.3,-9.3,1],[55.3,25,1],[26.8,-105.4,0],[27.6,4.1,0],[27.7,4.4,0],[30.7,29,0],[-76.8,158.2,0],[-77,157,0],[-76.7,159.3,0],[-76.8,159.4,0],[-76.7,159.3,0],[-76.7,159.7,0],[-76.7,159.7,0],[-76.7,159.7,0],[-76.7,159.7,0],[-76.8,158.2,0],[-76.7,159.3,0],[-76.7,159.4,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[-72,26,0],[36.2,-103.6,0],[34.7,-114.2,0],[-25.2,-69.8,0],[39.2,-98.8,0],[27.1,16.2,0],[27.2,16.1,0],[27.3,16.3,0],[26.9,16,0],[27.1,16.1,0],[27.1,16.3,0],[27.2,16.2,0],[-75.3,162,0],[19.2,54.9,0],[18.7,54.3,0],[19,54.4,0],[18.7,54.5,0],[18.9,54.5,0],[18.8,54.6,0],[18.2,54.1,0],[19.2,54.8,0],[18.6,54.1,0],[-85.3,166.5,0],[-24.8,-70.5,0],[-76.3,157.2,0],[-76.3,157.3,0],[-76.3,156.5,0],[-76.2,157.2,0],[-76.3,156.5,0],[-76.3,156.5,0],[-76.3,156.4,0],[-76.3,156.5,0],[-76.3,156.4,0],[-76.3,156.4,0],[-76.3,156.4,0],[-76,156.3,0],[-76.2,157.2,0],[-76.2,157.2,0],[-76.2,157.2,0],[-30.8,128,0],[-73,160.5,0],[-73,160.4,0],[-73,160.4,0],[-73,160.5,0],[-73,160.4,0],[49.6,-96.6,0],[-86.7,-141.5,0],[-85.7,175,0],[-85.7,175,0],[-73,75.3,0],[-73,75.2,0],[-72.9,75.3,0],[-72.8,75.3,0],[-72.8,75.3,0],[-72.8,75.3,0],[-72.8,75.3,0],[-72.8,75.3,0],[-73,75.3,0],[-72.9,75.3,0],[-72.8,75.3,0],[-72.8,75.3,0],[-73,75.3,0],[-72.8,75.3,0],[-72.8,75.4,0],[-72.8,75.3,0],[-31,126.3,0],[29,12.6,0],[29.1,12.6,0],[-30.6,129.6,0],[19.3,56.2,0],[20,56.5,0],[19.8,56.6,0],[19.7,56.2,0],[19.7,56.7,0],[40.7,-99.1,0],[-86.4,-70,0],[-86.4,-70,0],[-84.3,161.3,0],[-84.3,161.7,0],[-84.3,161.4,0],[-84.3,161.7,0],[-84.3,161.4,0],[-84.3,161.4,0],[-84.3,161.3,0],[-84.3,161.4,0],[-84.2,161.5,0],[-84.3,161.4,0],[-84.3,161.5,0],[-84.2,161.5,0],[-84.3,161.5,0],[34.5,-117,0],[-84.2,160.5,0],[34.2,-103.9,0],[-79.7,159.8,0],[-79.7,155.8,0],[-79.7,155.8,0],[-79.7,155.8,0],[-79.7,159.8,0],[-79.7,155.8,0],[-79.7,159.8,0],[-79.7,155.8,0],[-86.4,-165.4,0],[31.5,-4.2,0],[30.3,-5.8,0],[58.6,13.4,0],[-84.6,-61.8,0],[-85.7,-68.7,0],[-85.7,-68.7,0],[-85.7,-68,0],[-85.7,-68.1,0],[-84,168,0],[-84.6,162.4,0],[-84.6,162.6,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[-84,168,0],[21.2,58.4,0],[20.7,55.3,0],[-76.2,158.4,0],[43.9,-85.5,0],[34.1,-103.5,0],[-25.4,-69.9,0],[21.1,57.3,0],[20.6,57.3,0],[21.3,57.1,0],[18.5,53.9,0],[-30.1,126.5,0],[25.5,0.6,0],[-85.2,-94.6,0],[44,28.6,0],[-30.5,131.7,0],[-71.8,36.3,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[0,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[-71.5,35.7,0],[39.4,-114.4,0]];
+  var heroEl = document.getElementById('hero');
+  var heroInner = document.getElementById('hero-inner');
+  var gcv = document.getElementById('globe');
+  if (gcv && gcv.getContext && heroEl && MET.length) {
+    var g2 = gcv.getContext('2d');
+    var reducedMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var GP = MET.map(function (m) {
+      var la = m[0] * Math.PI / 180, lo = m[1] * Math.PI / 180;
+      return [Math.cos(la) * Math.cos(lo), Math.sin(la), Math.cos(la) * Math.sin(lo), m[2]];
+    });
+    var GC = { chart: '#2F7D4F', gold: '#8A6D23', line: '#DFDCD0' };
+    function refreshGC() {
+      var cs = getComputedStyle(document.documentElement);
+      GC.chart = cs.getPropertyValue('--chart').trim() || GC.chart;
+      GC.gold = cs.getPropertyValue('--gold').trim() || GC.gold;
+      GC.line = cs.getPropertyValue('--line').trim() || GC.line;
+    }
+    refreshGC();
+    try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refreshGC); } catch (e) {}
+    try { new MutationObserver(refreshGC).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), GW = 0, GH = 0;
+    function gsz() {
+      var r = heroEl.getBoundingClientRect();
+      GW = Math.max(1, Math.round(r.width * dpr));
+      GH = Math.max(1, Math.round(r.height * dpr));
+      gcv.width = GW; gcv.height = GH;
+    }
+    gsz();
+    window.addEventListener('resize', function () { gsz(); if (reducedMo) gdraw(); });
+    var yaw = 0.6, tX = -0.42, tY = 0, gpx = 0, gpy = 0, scrollPar = 0;
+    heroEl.addEventListener('pointermove', function (e) {
+      var r = heroEl.getBoundingClientRect();
+      gpx = (e.clientX - r.left) / r.width - 0.5;
+      gpy = (e.clientY - r.top) / r.height - 0.5;
+    });
+    heroEl.addEventListener('pointerleave', function () { gpx = 0; gpy = 0; });
+    function gdraw() {
+      g2.clearRect(0, 0, GW, GH);
+      var narrow = GW / dpr < 640;
+      var cx = GW * (narrow ? 0.5 : 0.74), cy = GH * 0.44 + scrollPar * 0.22 * dpr;
+      var R = Math.min(GW, GH) * 0.42;
+      if (R > 290 * dpr) R = 290 * dpr;
+      if (narrow) R = Math.min(R, GW * 0.44);
+      tX += (-0.42 + gpy * 0.3 - tX) * 0.06;
+      tY += (gpx * 0.5 - tY) * 0.06;
+      var ry = yaw + tY, rx = tX;
+      g2.strokeStyle = GC.line; g2.globalAlpha = 0.7; g2.lineWidth = dpr;
+      g2.beginPath(); g2.arc(cx, cy, R, 0, 6.2832); g2.stroke();
+      var cyr = Math.cos(ry), syr = Math.sin(ry), cxr = Math.cos(rx), sxr = Math.sin(rx);
+      for (var i = 0; i < GP.length; i++) {
+        var p = GP[i];
+        var x1 = p[0] * cyr + p[2] * syr, z1 = -p[0] * syr + p[2] * cyr;
+        var y2 = p[1] * cxr - z1 * sxr, z2 = p[1] * sxr + z1 * cxr;
+        var front = z2 > 0;
+        g2.globalAlpha = front ? 0.92 : 0.15;
+        g2.fillStyle = p[3] ? GC.gold : GC.chart;
+        g2.beginPath();
+        g2.arc(cx + x1 * R, cy - y2 * R, (p[3] ? 2.1 : 1.5) * dpr, 0, 6.2832);
+        g2.fill();
+      }
+      g2.globalAlpha = 1;
+    }
+    if (reducedMo) {
+      gdraw();
+    } else {
+      var heroVis = true;
+      try { new IntersectionObserver(function (en) { heroVis = en[0].isIntersecting; }).observe(heroEl); } catch (e) {}
+      window.addEventListener('scroll', function () {
+        var y = window.scrollY || 0;
+        scrollPar = y;
+        if (heroInner) heroInner.style.transform = y < 700 ? 'translate3d(0,' + (y * 0.28) + 'px,0)' : '';
+      }, { passive: true });
+      (function gloop() {
+        if (heroVis && !document.hidden) { yaw += 0.0018; gdraw(); }
+        requestAnimationFrame(gloop);
+      })();
+    }
+  }
+
   document.querySelectorAll('[data-share]').forEach(function (btn) {
     var kind = btn.getAttribute('data-share');
     if (kind === 'copy') {
