@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Mississippi File</title>
+<meta name="description" content="Mississippi's three-decade trajectory: the education miracle, the teen-birth collapse, the life-expectancy slide, and the widening income gap - every series verified.">
+<meta property="og:title" content="The Mississippi File">
+<meta property="og:description" content="One state moving in two directions at once - verified trajectories from NAEP, NCHS, SAIPE, IRS, and CFPB.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="The Blips Don't Lie">
+<meta property="og:image" content="https://the-blips-dont-lie.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://the-blips-dont-lie.vercel.app/og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#129718;</text></svg>"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F7F5EF;
+    --surface: #FFFFFF;
+    --ink: #23271F;
+    --muted: #6A705F;
+    --line: #DFDCD0;
+    --grid: #E9E6DA;
+    --accent: #256B43;
+    --chart: #2F7D4F;
+    --gold: #8A6D23;
+    --code-bg: #EFECE2;
+    --s1: #2A78D6;
+    --s2: #EB6834;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12150F;
+      --surface: #1A1E15;
+      --ink: #E8E9E0;
+      --muted: #A2A791;
+      --line: #2E3327;
+      --grid: #262B20;
+      --accent: #7CC79C;
+      --chart: #199E70;
+      --gold: #CBA85C;
+      --code-bg: #22271C;
+      --s1: #3987E5;
+      --s2: #D95926;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12150F;
+    --surface: #1A1E15;
+    --ink: #E8E9E0;
+    --muted: #A2A791;
+    --line: #2E3327;
+    --grid: #262B20;
+    --accent: #7CC79C;
+    --chart: #199E70;
+    --gold: #CBA85C;
+    --code-bg: #22271C;
+    --s1: #3987E5;
+    --s2: #D95926;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Public Sans", "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.55rem 1.05rem;
+  }
+  .topbar .brand {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wrap {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.2rem 1.05rem 4.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.8rem;
+  }
+  h1, h2 {
+    font-family: "Fraunces", Georgia, serif;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h1 { font-size: clamp(2.5rem, 9vw, 4rem); font-weight: 700; letter-spacing: -0.015em; }
+  h2 { font-size: clamp(1.35rem, 4.5vw, 1.7rem); font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  article { display: flex; flex-direction: column; gap: 1rem; border-top: 3px double var(--line); padding-top: 1.9rem; scroll-margin-top: 4rem; }
+
+  .eyebrow {
+    font-family: "Spline Sans Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .eyebrow .dim { color: var(--muted); }
+
+  .cover { display: flex; flex-direction: column; gap: 1rem; }
+  .tagline { font-size: 1.1rem; line-height: 1.55; max-width: 36rem; }
+  .meta-row { font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+  .catalog-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .catalog-strip { grid-template-columns: repeat(4, 1fr); } }
+  .cs { background: var(--surface); padding: 0.75rem 0.9rem; display: flex; flex-direction: column; gap: 0.1rem; }
+  .cs .n { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+  .cs .l { font-family: "Spline Sans Mono", monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  .toc { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .toc .tlabel { font-family: "Spline Sans Mono", monospace; font-size: 0.66rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
+  .toc .tlabel:first-child { margin-top: 0; }
+  .toc a { text-decoration: none; font-size: 0.94rem; line-height: 1.4; }
+  .toc a:hover { text-decoration: underline; }
+
+  .hero-n {
+    font-family: "Fraunces", serif;
+    font-weight: 700;
+    font-size: clamp(2.2rem, 9vw, 3.6rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .hero-cap { font-family: "Spline Sans Mono", monospace; font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+
+  figure { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.9rem 0.7rem 0.5rem;
+    overflow-x: auto;
+  }
+  .chart-box svg { display: block; width: 100%; height: auto; min-width: 480px; }
+  figcaption { font-size: 0.8rem; color: var(--muted); }
+  .chart-title { font-weight: 600; font-size: 0.92rem; }
+
+  svg text { font-family: "Spline Sans Mono", Consolas, monospace; font-size: 10.5px; fill: var(--muted); }
+  svg .dlabel { fill: var(--ink); font-weight: 500; }
+  svg .gline { stroke: var(--grid); stroke-width: 1; }
+  svg .axis { stroke: var(--line); stroke-width: 1; }
+  svg .bar { fill: var(--chart); }
+  svg .bar.dim { opacity: 0.55; }
+  svg .series-line { fill: none; stroke: var(--chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  svg .l1 { stroke: var(--s1); }
+  svg .l2 { stroke: var(--s2); }
+  svg .d1 { fill: var(--s1); }
+  svg .d2 { fill: var(--s2); }
+  svg .mf { fill: var(--s1); }
+  svg .mn { fill: var(--s2); }
+  svg .anno-dot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; }
+  svg .sdot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; }
+  svg .hit { fill: transparent; }
+  svg .cross { stroke: var(--line); stroke-width: 1; opacity: 0; }
+  svg .hoverdot { fill: var(--chart); stroke: var(--surface); stroke-width: 2; opacity: 0; }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; align-items: center; font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--muted); }
+  .lg { display: inline-flex; align-items: center; gap: 0.45em; }
+  .lg .sw { width: 16px; height: 3px; border-radius: 2px; flex: none; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .chip {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.26rem 0.75rem;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .chip b { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .swatch { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line); flex: none; }
+
+  ul.facts { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  ul.facts li::marker { color: var(--gold); }
+  ul.facts b { font-variant-numeric: tabular-nums; }
+
+  .caveat {
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.74rem;
+    color: var(--muted);
+    border-left: 2px solid var(--line);
+    padding-left: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .hbars { display: flex; flex-direction: column; gap: 0.42rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1rem; }
+  .hb { display: grid; grid-template-columns: 5.9rem 1fr 4.6rem; gap: 0.55rem; align-items: center; }
+  @media (min-width: 640px) { .hb { grid-template-columns: 7.2rem 1fr 6.4rem; gap: 0.7rem; } }
+  .hb .name { font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hb .track { height: 12px; border-radius: 0 3px 3px 0; background: var(--chart); min-width: 2px; }
+  .hb .track.avg { opacity: 0.45; }
+  .hb .val { font-family: "Spline Sans Mono", monospace; font-size: 0.7rem; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .ladder { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+  .lrow { display: grid; grid-template-columns: 3.6rem 4.6rem 1fr; gap: 0.6rem; align-items: baseline; padding: 0.6rem 1rem; border-bottom: 1px solid var(--grid); }
+  @media (min-width: 640px) { .lrow { grid-template-columns: 4.5rem 7rem 1fr; gap: 1rem; padding: 0.65rem 1.2rem; } }
+  .lrow:last-child { border-bottom: none; }
+  .lrow .lm { font-family: "Spline Sans Mono", monospace; font-size: 0.76rem; color: var(--gold); }
+  .lrow .ln { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+  .lrow .lc { font-size: 0.82rem; color: var(--muted); }
+
+  details { border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  details summary { cursor: pointer; padding: 0.5rem 0.9rem; font-family: "Spline Sans Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); }
+  details[open] summary { border-bottom: 1px solid var(--line); }
+  details .t-in { padding: 0.55rem 0.9rem 0.85rem; overflow-x: auto; }
+  table { border-collapse: collapse; font-size: 0.78rem; min-width: 300px; }
+  th, td { text-align: right; padding: 0.26rem 0.8rem 0.26rem 0; font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-family: "Spline Sans Mono", monospace; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--line); }
+
+  .share-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .share-label { font-family: "Spline Sans Mono", monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-right: 0.2rem; }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.42rem 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .share-btn.fb { background: #1877F2; border-color: #1877F2; color: #FFFFFF; }
+  .share-btn svg { width: 14px; height: 14px; fill: currentColor; display: block; }
+
+  .method { font-size: 0.88rem; color: var(--muted); }
+  .method code { font-family: "Spline Sans Mono", monospace; font-size: 0.82em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 3px; color: var(--ink); }
+
+  footer { border-top: 3px double var(--line); padding-top: 1.3rem; font-size: 0.82rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.8rem; }
+  footer ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.28rem; }
+
+  #tip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.12s;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.4rem;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--bg);
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 0.76rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) { #tip, #toast { transition: none; } }
+
+  .topbar .brand { display: inline-flex; align-items: center; }
+  .logo-mini { width: 21px; height: 21px; margin-right: 0.5rem; flex: none; }
+  .hero { position: relative; overflow: hidden; border-bottom: 3px double var(--line); margin: -2.2rem -1.05rem 0; padding: 3rem 1.05rem 2.2rem; }
+  #globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.92; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 55%, var(--bg) 97%); }
+  .hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.1rem; will-change: transform; }
+  .lockup { display: flex; align-items: center; gap: 1.1rem; }
+  .logo-mark { width: clamp(56px, 13vw, 84px); height: auto; flex: none; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
+  .globe-cap { font-family: "Spline Sans Mono", monospace; font-size: 0.68rem; color: var(--muted); max-width: 34rem; }
+  @media (prefers-reduced-motion: reduce) { .hero-inner { transform: none !important; } }
+  .range {
+    font-family: "Spline Sans Mono", Consolas, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: -0.35rem;
+  }
+  .echart {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    width: 100%;
+  }
+  :root { --t1: #C9E2CF; --t2: #DCEBDC; --t3: #EBF1E7; --t4: #F3F1E5; --t5: #F5E9DC; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --t1: #1F4630; --t2: #1C3626; --t3: #202A1E; --t4: #272417; --t5: #2D1F14; }
+  }
+  :root[data-theme="dark"] { --t1: #1F4630; --t2: #1C3626; --t3: #202A1E; --t4: #272417; --t5: #2D1F14; }
+  table.board { min-width: 620px; width: 100%; }
+  table.board th { position: sticky; top: 0; background: var(--surface); }
+  table.board td.q1 { background: var(--t1); }
+  table.board td.q2 { background: var(--t2); }
+  table.board td.q3 { background: var(--t3); }
+  table.board td.q4 { background: var(--t4); }
+  table.board td.q5 { background: var(--t5); }
+  table.board tr.ms-row td { border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="index.html"><svg class="logo-mini" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="var(--surface)" stroke="var(--chart)" stroke-width="3"></circle><circle cx="32" cy="32" r="16" fill="none" stroke="var(--chart)" stroke-width="2" opacity="0.45"></circle><line x1="32" y1="32" x2="50" y2="14" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"></line><circle cx="32" cy="32" r="3" fill="var(--gold)"></circle><circle cx="22" cy="26" r="3.5" fill="var(--chart)"></circle><circle cx="40" cy="42" r="3.5" fill="var(--chart)"></circle><circle cx="44" cy="22" r="4" fill="var(--gold)"></circle></svg>The Blips Don't Lie</a>
+  <a class="share-btn" href="index.html">← All stories</a>
+</div>
+
+<div class="wrap" id="top">
+
+  <header class="cover" style="display:flex;flex-direction:column;gap:1rem;border-bottom:3px double var(--line);padding-bottom:2rem">
+    <p class="eyebrow">State dossier · <span class="dim">every series independently verified · pulled Aug 2026</span></p>
+    <h1 style="font-size:clamp(2.2rem,7vw,3.4rem)">The Mississippi File</h1>
+    <p class="tagline">One state moving in two directions at once. Mississippi's classrooms staged the most famous comeback in American education while its lifespans fell to last in the nation — and the drawers of the federal card file hold both trajectories, year by year, going back three decades.</p>
+    <div class="catalog-strip">
+      <div class="cs"><span class="n">49th</span><span class="l">Trajectory Board rank</span></div>
+      <div class="cs"><span class="n">9th</span><span class="l">grade-4 reading, 2024</span></div>
+      <div class="cs"><span class="n">70.9</span><span class="l">life expectancy, dead last</span></div>
+      <div class="cs"><span class="n">−66%</span><span class="l">teen births since 1991</span></div>
+    </div>
+  </header>
+
+  <article id="verdict">
+    <p class="eyebrow">The verdict, in two columns</p>
+    <h2>Progress and decline, side by side</h2>
+    <div class="pile">
+      <div class="pile-item"><span class="pn" style="color:var(--chart)">▲ Rising: the classroom</span><span>Grade-4 reading: 49th of 50 states in 2013 → <b>9th in 2024</b>, gaining 10.0 points while the nation lost 6.8. The lines fully crossed: MS now reads 3.5 points <em>above</em> the national average.</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--chart)">▲ Rising: fewer teen mothers</span><span>Teen births fell <b>66%</b> from the 1991 peak (85.3 → 29.1 per 1,000) — still 2nd-highest nationally, but the collapse is real and steep.</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--chart)">▲ Holding: poverty edging down</span><span>21.4% (1995) → 18.3% (2023), though it detoured through a 22.4% peak in 2010 and remains ~6 points above the U.S.</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--s2)">▼ Falling: the horizon</span><span>Life expectancy 74.6 (2018) → <b>70.9 (2021)</b> — last in the nation three years running, with the MS–US gap widening from 4.1 to 5.1 years.</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--s2)">▼ Falling: the paycheck gap</span><span>Median income was <b>77.8% of the U.S. level in 1995; 70.0% in 2023</b>. Nominal income doubled — and lost ground the whole time.</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--s2)">▼ Falling: the headcount</span><span>Population peaked at the 2010 Census and has shrunk since (−24,252); the IRS measures a steady drip of departing income (−$66M AGI in 2022–23).</span></div>
+      <div class="pile-item"><span class="pn" style="color:var(--muted)">■ Stuck: the waistline</span><span>Adult obesity has hovered at <b>39–41% since 2018</b> (40.4% in 2024, 2nd only to West Virginia), about 7 points above the nation.</span></div>
+    </div>
+  </article>
+
+  <article id="classroom">
+    <p class="eyebrow">Progress · <span class="dim">NAEP Data Service, 2003–2024</span></p>
+    <h2>The crossover: Mississippi's readers pass the nation</h2>
+    <p class="range">Data: NAEP grade-4 reading, MS vs national public · assessments 2003–2024</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Mississippi</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>National public</span>
+      </div>
+      <div class="echart" id="ms-naep" style="height:300px"></div>
+      <figcaption>The 2013 "Literacy-Based Promotion Act" cohort era: MS gained 10.8 points 2013→2019 while the nation was flat, held through COVID, and crossed above in 2024. Grade-4 math shows the same crossover; grade-8 math (−4.8 vs nation) is the unfinished chapter.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>Two-decade span: MS <b>+13.0 points</b> (205.5 → 218.5) while the nation fell 3.2.</li>
+      <li>The climb wasn't monotonic — dips in 2013 and 2022 — and NAEP carries ±1–3 points of sampling error; the crossover itself is beyond that noise.</li>
+      <li>Verified independently: 49th→9th ranking reproduced from all 50 state scores, both years.</li>
+    </ul>
+  </article>
+
+  <article id="cradle">
+    <p class="eyebrow">Progress · <span class="dim">NCHS teen births, 1990–2019</span></p>
+    <h2>The teen-birth collapse, Mississippi edition</h2>
+    <p class="range">Data: births per 1,000 females 15–19 · 1990–2019 final</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Mississippi</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>United States</span>
+      </div>
+      <div class="echart" id="ms-teen" style="height:280px"></div>
+      <figcaption>From 85.3 at the 1991 peak to 29.1 — a 66% decline that tracked the national collapse while staying about 12 points above it. One wrinkle the verifier flagged: MS ticked <em>up</em> 2018→2019 while the nation kept falling.</figcaption>
+    </figure>
+  </article>
+
+  <article id="horizon">
+    <p class="eyebrow">Decline · <span class="dim">NCHS state life tables, 2018–2021</span></p>
+    <h2>Four years, minus 3.7 — and last place three years running</h2>
+    <p class="range">Data: life expectancy at birth, both sexes · 2018–2021</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Mississippi</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>United States (2021 US value not published)</span>
+      </div>
+      <div class="echart" id="ms-le" style="height:280px"></div>
+      <figcaption>COVID pushed everyone down; Mississippi fell from lower and fell harder — the gap to the nation widened from 4.1 years (2018) to 5.1 (2020). MS ranked lowest in 2019 before the pandemic ever arrived.</figcaption>
+    </figure>
+  </article>
+
+  <article id="waistline">
+    <p class="eyebrow">Stuck · <span class="dim">CDC BRFSS, 2011–2024</span></p>
+    <h2>The plateau: obesity holds at 40</h2>
+    <p class="range">Data: adult obesity prevalence, self-reported · 2011–2024</p>
+    <figure>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--s1)"></span>Mississippi</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>National</span>
+      </div>
+      <div class="echart" id="ms-obesity" style="height:280px"></div>
+      <figcaption>34.9% in 2011, 40.4% in 2024 — a seven-point climb into a plateau that GLP-1 drugs have not yet dented in either line. Self-reported, so both curves understate reality.</figcaption>
+    </figure>
+  </article>
+
+  <article id="wallet">
+    <p class="eyebrow">Decline · <span class="dim">Census SAIPE, seven vintages 1995–2023</span></p>
+    <h2>Richer every year, further behind every decade</h2>
+    <p class="range">Data: median household income as % of U.S. · 1995–2023</p>
+    <figure>
+      <div class="echart" id="ms-income" style="height:280px"></div>
+      <figcaption>Nominal income doubled ($26.5k → $54.4k). The ratio is the truth: 77.8% of the U.S. median in 1995, 70.0% in 2023. The gap widens in booms and narrows in busts — Mississippi catches up only when America slows down.</figcaption>
+    </figure>
+    <ul class="facts">
+      <li>Population is the starkest line in the file: <b>+3.5% over 24 years</b>, negative since 2010 — while the nation grew ~21%.</li>
+      <li>The IRS confirms the drift: net −3,125 tax returns and <b>−$66.4M in AGI</b> in the 2022–23 filing window.</li>
+    </ul>
+  </article>
+
+  <article id="machine">
+    <p class="eyebrow">The anomaly · <span class="dim">CFPB, 2015–2025</span></p>
+    <h2>The complaint machine found Mississippi</h2>
+    <p class="range">Data: CFPB complaints from MS residents · 2015–2025</p>
+    <figure>
+      <div class="echart" id="ms-complaints" style="height:280px"></div>
+      <figcaption>871 complaints in 2015; 101,439 in 2025 — a 58.7× multiple over 2019, the second-fastest growth in the nation. As the national story shows, this curve measures the credit-repair complaint industry far more than consumer distress.</figcaption>
+    </figure>
+    <div class="share-row"><span class="share-label">Share this dossier</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <footer>
+    <p class="method"><b>Method.</b> Six agents (three pullers, three adversarial verifiers) mined and re-verified every series: NAEP Data Service (education), NCHS y268-sna3 (teen births), four NCHS state life-table vintages, CDC BRFSS hn4x-zwk7 (obesity), seven SAIPE vintages 1995–2023 (income/poverty, fixed-width layouts validated per year against the U.S. row), Census intercensal + vintage-2024 population files, IRS SOI migration 2022–23, and the CFPB Complaint Search API. Every load-bearing number reproduced on independent re-fetch.</p>
+    <p>Part of <a href="index.html">The Blips Don't Lie</a>.</p>
+  </footer>
+
+</div>
+
+<div id="toast" role="status"></div>
+
+<script src="lib/echarts.min.js"></script>
+<script>
+(function () {
+  var toast = document.getElementById('toast');
+  var toastTimer = 0;
+  function showToast(text) {
+    toast.textContent = text;
+    toast.style.opacity = '1';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.style.opacity = '0'; }, 1800);
+  }
+  document.querySelectorAll('[data-share]').forEach(function (btn) {
+    var kind = btn.getAttribute('data-share');
+    var url = function () { return location.href.split('#')[0]; };
+    if (kind === 'copy') {
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url()).then(function () { showToast('Link copied'); }, function () { showToast(url()); });
+        } else showToast(url());
+      });
+    } else if (kind === 'fb') {
+      var w = function () { btn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url()); };
+      w(); btn.addEventListener('pointerdown', w);
+    } else if (kind === 'x') {
+      var wx = function () { btn.href = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url()) + '&text=' + encodeURIComponent("The Mississippi File — The Blips Don't Lie"); };
+      wx(); btn.addEventListener('pointerdown', wx);
+    }
+  });
+
+  if (!window.echarts) return;
+  var EC = window.echarts;
+  var charts = [];
+  var animOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function isDark() {
+    var t = document.documentElement.dataset.theme;
+    return t === 'dark' || (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function tok() {
+    var cs = getComputedStyle(document.documentElement);
+    function v(n, f) { var x = cs.getPropertyValue(n).trim(); return x || f; }
+    return { ink: v('--ink','#23271F'), muted: v('--muted','#6A705F'), grid: v('--grid','#E9E6DA'), line: v('--line','#DFDCD0'),
+      chart: v('--chart','#2F7D4F'), s1: v('--s1','#2A78D6'), s2: v('--s2','#EB6834'), surface: v('--surface','#FFFFFF') };
+  }
+  function ax(c) {
+    return { axisLine: { lineStyle: { color: c.line } }, axisTick: { show: false },
+      axisLabel: { color: c.muted, fontFamily: 'Spline Sans Mono, monospace', fontSize: 10.5 },
+      splitLine: { lineStyle: { color: c.grid } } };
+  }
+  function tip(c) {
+    return { trigger: 'axis', backgroundColor: c.ink, borderWidth: 0,
+      textStyle: { color: c.surface, fontFamily: 'Spline Sans Mono, monospace', fontSize: 11 } };
+  }
+  function two(id, years, ms, us, yfmt, ymin, ymax) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var c = tok();
+    var ch = EC.init(el);
+    var y = Object.assign(ax(c), { type: 'value' });
+    if (yfmt) y.axisLabel = Object.assign({}, y.axisLabel, { formatter: yfmt });
+    if (ymin !== undefined) y.min = ymin;
+    if (ymax !== undefined) y.max = ymax;
+    ch.setOption({ animation: animOK, grid: { left: 46, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+      xAxis: Object.assign(ax(c), { type: 'category', data: years, boundaryGap: false }),
+      yAxis: y,
+      series: [
+        { name: 'Mississippi', type: 'line', data: ms, lineStyle: { color: c.s1, width: 2.5 }, itemStyle: { color: c.s1 }, symbolSize: 5 },
+        { name: 'National', type: 'line', data: us, lineStyle: { color: c.s2, width: 2 }, itemStyle: { color: c.s2 }, symbolSize: 5 }
+      ] });
+    charts.push({ el: el, rebuild: function () { ch.dispose(); two(id, years, ms, us, yfmt, ymin, ymax); } });
+  }
+  function bars(id, years, vals, color) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var c = tok();
+    var ch = EC.init(el);
+    ch.setOption({ animation: animOK, grid: { left: 54, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+      xAxis: Object.assign(ax(c), { type: 'category', data: years }),
+      yAxis: Object.assign(ax(c), { type: 'value' }),
+      series: [{ type: 'bar', data: vals, barWidth: '55%', itemStyle: { color: color || c.chart, borderRadius: [3, 3, 0, 0] } }] });
+    charts.push({ el: el, rebuild: function () { ch.dispose(); bars(id, years, vals, color); } });
+  }
+  function buildAll() {
+    charts = [];
+    two('ms-naep', ['2003','2009','2013','2019','2022','2024'], [205.5,210.5,208.5,219.3,217.2,218.5], [218.2,220.9,221.8,220.5,217.5,215], null, 200, 226);
+    two('ms-teen', ['1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019'],
+      [81,85.3,83.6,82.2,81.7,79.2,74,71.8,71.4,70.9,70.1,65.6,63.5,61.2,60.1,58.3,67.2,70.1,64,62.2,55,50.2,46.1,42.6,38,34.8,32.6,31,27.8,29.1],
+      [59.9,61.8,60.3,59,58.2,56,53.5,51.3,50.3,48.8,47.7,45,42.6,41.1,40.5,39.7,41.1,41.5,40.2,37.9,34.2,31.3,29.4,26.6,24.2,22.3,20.3,18.8,17.4,16.7]);
+    two('ms-le', ['2018','2019','2020','2021'], [74.6,74.4,71.9,70.9], [78.7,78.8,77,null], null, 70, 80);
+    two('ms-obesity', ['2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'],
+      [34.9,34.6,35.1,35.5,35.6,37.3,37.3,39.5,40.8,39.7,39.1,39.5,40.1,40.4],
+      [27.4,27.7,28.3,28.9,28.9,29.6,30.1,30.9,31.4,31.9,33,33.3,32.8,33.1], '{value}%', 25, 43);
+    (function () {
+      var el = document.getElementById('ms-income');
+      if (!el) return;
+      var c = tok();
+      var ch = EC.init(el);
+      ch.setOption({ animation: animOK, grid: { left: 50, right: 16, top: 20, bottom: 28 }, tooltip: tip(c),
+        xAxis: Object.assign(ax(c), { type: 'category', data: ['1995','2000','2005','2010','2015','2019','2023'], boundaryGap: false }),
+        yAxis: Object.assign(ax(c), { type: 'value', min: 65, max: 80, axisLabel: Object.assign({}, ax(c).axisLabel, { formatter: '{value}%' }) }),
+        series: [{ type: 'line', data: [77.8,77.5,71.6,73.9,72.8,69.9,70.0],
+          lineStyle: { color: c.chart, width: 2.5 }, itemStyle: { color: c.chart }, symbolSize: 6,
+          label: { show: true, position: 'top', color: c.muted, fontSize: 9.5, fontFamily: 'Spline Sans Mono, monospace', formatter: '{c}%' } }] });
+      charts.push({ el: el, rebuild: function () {} });
+    })();
+    bars('ms-complaints', ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'],
+      [871,955,1506,1965,1727,3354,4633,8788,13263,29599,101439]);
+  }
+  buildAll();
+  window.addEventListener('resize', function () { charts.forEach(function (o) { var inst = EC.getInstanceByDom(o.el); if (inst) inst.resize(); }); });
+  function rebuildAll() {
+    charts.forEach(function (o) { var inst = EC.getInstanceByDom(o.el); if (inst) inst.dispose(); });
+    buildAll();
+  }
+  try { window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rebuildAll); } catch (e) {}
+  try { new MutationObserver(rebuildAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+})();
+</script>
+
+</body>
+</html>
