@@ -6,7 +6,7 @@
 <title>The Card File</title>
 <meta name="description" content="Live numbers pulled from the federal data drawers - every figure queried from a government API, every cross-dataset claim independently verified before publication.">
 <meta property="og:title" content="The Card File">
-<meta property="og:description" content="Verified data stories pulled live from CFPB, Census, NASA, USGS, Treasury, FDIC, and more.">
+<meta property="og:description" content="Verified data stories pulled live from CFPB, Census, NASA, USGS, Treasury, FDIC, IRS, and more.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Card File">
 <meta name="twitter:card" content="summary">
@@ -313,12 +313,18 @@
     <div class="catalog-strip">
       <div class="cs"><span class="n">552,271</span><span class="l">datasets in catalog</span></div>
       <div class="cs"><span class="n">12</span><span class="l">APIs queried live</span></div>
-      <div class="cs"><span class="n">14</span><span class="l">stories so far</span></div>
+      <div class="cs"><span class="n">19</span><span class="l">stories so far</span></div>
       <div class="cs"><span class="n">2×</span><span class="l">errors caught by verifiers</span></div>
     </div>
   </header>
 
   <nav class="toc" aria-label="Contents">
+    <p class="tlabel">Deep relations — three sources per story</p>
+    <a href="#r4-migration">Florida gained $20.6 billion in income last year without anyone earning it there</a>
+    <a href="#r4-quake-capitals">America's most famous earthquake zones had zero earthquakes</a>
+    <a href="#r4-life-income">Nine years of life separate Hawaii and Mississippi — and income tracks it at r = 0.79</a>
+    <a href="#r4-complaint-poverty">We suspected poverty drives the complaint belt. The data says barely.</a>
+    <a href="#r4-federal-money">Federal award money per resident has no relationship to state income at all</a>
     <p class="tlabel">Crossing the streams — verified cross-inferences</p>
     <a href="#r3-georgia">The complaint machine has a home address, and it's Georgia</a>
     <a href="#r3-banks">Size-adjust the banks and the villain list flips upside down</a>
@@ -336,6 +342,129 @@
     <a href="#r1-ev">Watching a technology arrive, one license plate at a time</a>
     <a href="#r1-squirrels">The government knows how many squirrels moaned at it</a>
   </nav>
+
+  <article id="r4-migration">
+    <p class="eyebrow">Deep relations · <span class="dim">IRS SOI × Census × SAIPE</span></p>
+    <h2>Florida gained $20.6 billion in income last year without anyone earning it there</h2>
+    <p>The IRS quietly publishes where every tax return moved between filings, with adjusted gross income attached. The 2022–23 vintage says the great income migration is real and lopsided: <b>Florida netted +$20.6B in AGI</b> from interstate movers — nearly 4× second-place Texas — while <b>California lost $11.9B</b> (about $304 per resident) and New York lost $9.9B.</p>
+    <figure>
+      <p class="chart-title">Net adjusted gross income from interstate movers, $B (IRS 2022–23)</p>
+      <div class="legend-row">
+        <span class="lg"><span class="sw" style="background:var(--chart)"></span>Net gainers</span>
+        <span class="lg"><span class="sw" style="background:var(--s2)"></span>Net losers</span>
+      </div>
+      <div class="hbars">
+        <div class="hb"><span class="name">Florida</span><span class="track" style="width:100%"></span><span class="val">+20.6</span></div>
+        <div class="hb"><span class="name">Texas</span><span class="track" style="width:26.8%"></span><span class="val">+5.5</span></div>
+        <div class="hb"><span class="name">S. Carolina</span><span class="track" style="width:20%"></span><span class="val">+4.1</span></div>
+        <div class="hb"><span class="name">N. Carolina</span><span class="track" style="width:18.9%"></span><span class="val">+3.9</span></div>
+        <div class="hb"><span class="name">Arizona</span><span class="track" style="width:13.4%"></span><span class="val">+2.8</span></div>
+        <div class="hb"><span class="name">New Jersey</span><span class="track" style="width:12.4%;background:var(--s2)"></span><span class="val">−2.6</span></div>
+        <div class="hb"><span class="name">Massachusetts</span><span class="track" style="width:19.5%;background:var(--s2)"></span><span class="val">−4.0</span></div>
+        <div class="hb"><span class="name">Illinois</span><span class="track" style="width:29%;background:var(--s2)"></span><span class="val">−6.0</span></div>
+        <div class="hb"><span class="name">New York</span><span class="track" style="width:47.9%;background:var(--s2)"></span><span class="val">−9.9</span></div>
+        <div class="hb"><span class="name">California</span><span class="track" style="width:57.7%;background:var(--s2)"></span><span class="val">−11.9</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>The movers are rich: Florida's inbound returns averaged <b>$122,539 AGI</b> — roughly <b>1.67×</b> Florida's own resident median household income ($73,283). New York's leavers averaged $105,983, 1.29× the New York median. The people in motion out-earn the people in place, on both ends.</li>
+      <li>Sun Belt sweep: the top five gainers are FL, TX, SC, NC, AZ; the top five losers are CA, NY, IL, MA, NJ.</li>
+      <li>Every figure reproduced exactly from fresh downloads of the IRS inflow/outflow files, including the end-anchored filter that separates "Total Migration-US" from its lookalike summary rows.</li>
+    </ul>
+    <p class="caveat">2022–23 filing-year vintage — flows lag today by several years. Mean AGI per return ≠ median household income (different unit, different concept, mean skews high); the 1.67× is directional. IRS suppresses tiny flows.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r4-quake-capitals">
+    <p class="eyebrow">Deep relations · <span class="dim">USGS × city geography × Census</span></p>
+    <h2>America's most famous earthquake zones had zero earthquakes</h2>
+    <p>Count every M4.5+ earthquake within 200 km of twelve major metros over 25 years and rank them. <b>Anchorage: 159</b> — including the M7.1 that hit the city in November 2018. San Diego: 100. Los Angeles: 57. And the two most famous "Big One" zones outside California? <b>Memphis and St. Louis, sitting on the New Madrid fault: zero. Each.</b> Portland and Seattle, atop M9-capable Cascadia: four and six.</p>
+    <figure>
+      <p class="chart-title">M4.5+ earthquakes within 200 km, 2001–2026</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">Anchorage</span><span class="track" style="width:100%"></span><span class="val">159</span></div>
+        <div class="hb"><span class="name">San Diego</span><span class="track" style="width:62.9%"></span><span class="val">100</span></div>
+        <div class="hb"><span class="name">Los Angeles</span><span class="track" style="width:35.8%"></span><span class="val">57</span></div>
+        <div class="hb"><span class="name">Reno</span><span class="track" style="width:22.6%"></span><span class="val">36</span></div>
+        <div class="hb"><span class="name">San Francisco</span><span class="track" style="width:13.8%"></span><span class="val">22</span></div>
+        <div class="hb"><span class="name">Seattle</span><span class="track" style="width:3.8%"></span><span class="val">6</span></div>
+        <div class="hb"><span class="name">Salt Lake City</span><span class="track" style="width:3.1%"></span><span class="val">5</span></div>
+        <div class="hb"><span class="name">Portland</span><span class="track" style="width:2.5%"></span><span class="val">4</span></div>
+        <div class="hb"><span class="name">Honolulu</span><span class="track" style="width:1.9%"></span><span class="val">3</span></div>
+        <div class="hb"><span class="name">New York</span><span class="track" style="width:0.6%"></span><span class="val">1</span></div>
+        <div class="hb"><span class="name">Memphis</span><span class="track" style="width:0%"></span><span class="val">0</span></div>
+        <div class="hb"><span class="name">St. Louis</span><span class="track" style="width:0%"></span><span class="val">0</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>The inference: <b>background frequency is not worst-case risk.</b> Cascadia and New Madrid store their energy and spend it rarely, in enormous events — their quiet 25-year records are exactly what a locked fault looks like.</li>
+      <li>Los Angeles County puts <b>9.76 million people</b> next to 2.3 quakes a year; Anchorage's 290k residents live with 6.4 a year.</li>
+      <li>The verifier went hunting for missed leaders and found one worth knowing: <b>San Juan, Puerto Rico would rank #2 at 152</b> — and St. Louis's zero is boundary-sensitive (the 2008 M5.2 Mt. Carmel quake sits ~205 km out, just past the 200 km cutoff).</li>
+    </ul>
+    <p class="caveat">200 km circles overlap for LA/San Diego, so counts aren't additive. Core-county population understates metro size. Frequency ranking says nothing about building codes or shaking intensity.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r4-life-income">
+    <p class="eyebrow">Deep relations · <span class="dim">CDC/NCHS × SAIPE × Census</span></p>
+    <h2>Nine years of life separate Hawaii and Mississippi — and income tracks it at r = 0.79</h2>
+    <p>Join every state's 2021 life expectancy at birth (NCHS) to its median household income (SAIPE) and the strongest correlation in this entire publication appears: <b>r = 0.79</b>. A newborn in Hawaii (79.9 years, $96,716 median income) is expected to outlive one in Mississippi (70.9 years, $54,386) by <b>nine full years</b>.</p>
+    <div class="chips">
+      <span class="chip">Hawaii <b>79.9 yrs</b> · $96.7k</span>
+      <span class="chip">Massachusetts <b>79.6</b> · $99.8k</span>
+      <span class="chip">Connecticut <b>79.2</b> · $91.5k</span>
+      <span class="chip">Alabama <b>72.0</b> · $62.2k</span>
+      <span class="chip">W. Virginia <b>71.0</b> · $55.9k</span>
+      <span class="chip">Mississippi <b>70.9</b> · $54.4k</span>
+    </div>
+    <ul class="facts">
+      <li>The least-squares slope works out to roughly <b>$6,800 of median household income per additional year</b> of life expectancy — a correlation, emphatically not a price tag: income proxies education, healthcare access, smoking rates, and much else.</li>
+      <li>Interesting residual: DC has the highest income ($104,643) but only 75.3 years — and New York over-performs its income at 79.0.</li>
+      <li>Life expectancy is the COVID-depressed 2021 vintage (the most recent state-level NCHS release found); the r held at 0.786 under independent recomputation with a clean 51/51 state join.</li>
+    </ul>
+    <p class="caveat">2021 life expectancy vs 2023 income; unweighted across states; ecological correlation — says nothing about individuals.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r4-complaint-poverty">
+    <p class="eyebrow">Deep relations · <span class="dim">CFPB × SAIPE × Census</span></p>
+    <h2>We suspected poverty drives the complaint belt. The data says barely.</h2>
+    <p>The complaint-per-capita map looks like a poverty map — Mississippi, Louisiana, Alabama all near the top. So we tested it: state median income vs 2025 complaints per 1,000 residents, all 51 jurisdictions. The correlation is <b>r = −0.11</b> (−0.17 without outlier DC). Income explains <b>1–3% of the variance</b>. The poorest ten states do average more complaints than the richest ten (14.2 vs 10.9 per 1,000), but that gap is carried almost entirely by one regional cluster.</p>
+    <ul class="facts">
+      <li>The residuals name the real story: <b>Georgia files 26 more complaints per 1,000 than its income predicts</b>, Florida +22, Mississippi +21 — while equally poor West Virginia (3.5) and New Mexico (4.0) barely complain at all. Poverty doesn't produce complaint volume; a Southeast credit-dispute economy does.</li>
+      <li>Poorest-state cluster check: Mississippi 34.5/1,000 vs West Virginia 3.5/1,000 — a 10× gap between two states $1,500 apart in median income.</li>
+      <li>Every statistic — both correlations, both decile averages, the regression line, all 51 scatter values — reproduced exactly under independent recomputation.</li>
+    </ul>
+    <p class="caveat">Ecological correlation at state level; SAIPE 2023 income vs 2025 complaints vs 2024 population. The verifier also tightened one caveat: ~28k excluded complaints sit in territory/military buckets and another ~8k carry no state at all.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
+
+  <article id="r4-federal-money">
+    <p class="eyebrow">Deep relations · <span class="dim">USASpending × Census × SAIPE</span></p>
+    <h2>Federal award money per resident has no relationship to state income at all</h2>
+    <p>USASpending totals the last twelve months of federal award obligations by recipient state; divide by population and correlate with income and you get the flattest line in this publication: <b>r = −0.01</b>. Rich and poor states alike sit at both extremes — the per-resident spread runs <b>14.6×</b>, from North Dakota's $108,117 down to Utah's $7,404, with income explaining none of it.</p>
+    <figure>
+      <p class="chart-title">Federal award dollars per resident, latest 12 months — top 8 states</p>
+      <div class="hbars">
+        <div class="hb"><span class="name">N. Dakota</span><span class="track" style="width:100%"></span><span class="val">$108,117</span></div>
+        <div class="hb"><span class="name">Kentucky</span><span class="track" style="width:36.7%"></span><span class="val">$39,638</span></div>
+        <div class="hb"><span class="name">Minnesota</span><span class="track" style="width:35.5%"></span><span class="val">$38,355</span></div>
+        <div class="hb"><span class="name">Connecticut</span><span class="track" style="width:32.8%"></span><span class="val">$35,469</span></div>
+        <div class="hb"><span class="name">Indiana</span><span class="track" style="width:23.4%"></span><span class="val">$25,327</span></div>
+        <div class="hb"><span class="name">S. Carolina</span><span class="track" style="width:20.4%"></span><span class="val">$22,012</span></div>
+        <div class="hb"><span class="name">Alaska</span><span class="track" style="width:19.2%"></span><span class="val">$20,791</span></div>
+        <div class="hb"><span class="name">Pennsylvania</span><span class="track" style="width:17.7%"></span><span class="val">$19,171</span></div>
+        <div class="hb"><span class="name">US average</span><span class="track avg" style="width:12.4%"></span><span class="val">$13,424</span></div>
+      </div>
+    </figure>
+    <ul class="facts">
+      <li>The national picture: <b>$4.57 trillion</b> in awards over twelve months — <b>$13,424 per resident</b>.</li>
+      <li>North Dakota's wild number is the measure showing its seams: "recipient state" credits money to where the awarded <em>entity</em> sits, not where work happens — $86.1B landed on 797k residents, exceeding even DC's $58,406 per head.</li>
+      <li>Bottom five is its own argument against the income theory: New Jersey ($99.7k income) and Utah ($93k) sit beside Kansas, Nevada, and Georgia at under $9,000 per resident.</li>
+    </ul>
+    <p class="caveat">Award obligations exclude Social Security, Medicare benefits, and federal payroll — this is grant/contract money, not all federal spending. The API's exact 12-month window isn't stated in its response. All figures byte-identical on independent re-fetch.</p>
+    <div class="share-row"><span class="share-label">Share</span><a class="share-btn fb" data-share="fb" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.92 3.78-3.92 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.43-4.92 8.43-9.94Z"/></svg>Facebook</a><a class="share-btn" data-share="x" href="#" target="_blank" rel="noopener">Post to X</a><button class="share-btn" data-share="copy" type="button">Copy link</button></div>
+  </article>
 
   <article id="r3-georgia">
     <p class="eyebrow">Cross-inference · <span class="dim">CFPB × Census</span></p>
@@ -943,6 +1072,9 @@
       <li><a href="https://earthquake.usgs.gov/fdsnws/event/1/">USGS Earthquake Catalog</a> (FDSN event API)</li>
       <li><a href="https://banks.data.fdic.gov/docs/">FDIC BankFind Suite API</a> · <a href="https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/debt-to-the-penny">Treasury FiscalData</a></li>
       <li><a href="https://www.census.gov/programs-surveys/popest.html">Census Population Estimates</a> · <a href="https://www.census.gov/programs-surveys/saipe.html">SAIPE</a></li>
+      <li><a href="https://www.irs.gov/statistics/soi-tax-stats-migration-data">IRS SOI Migration Data</a> (state inflow/outflow, 2022–23)</li>
+      <li><a href="https://api.usaspending.gov/">USASpending API</a> (recipient-state award totals)</li>
+      <li><a href="https://data.cdc.gov/">NCHS — U.S. State Life Expectancy by Sex, 2021</a> (data.cdc.gov <code>it4f-frdc</code>)</li>
       <li><a href="https://catalog.data.gov/dataset">data.gov catalog</a> — 552,271 datasets at time of writing</li>
     </ul>
   </footer>
