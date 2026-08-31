@@ -2,4 +2,5 @@
 
 A weekly GOOD / BAD / UGLY review of new federal legislative activity, grounded in documents fetched from the GovInfo API.
 
+- [2026-08-31](./2026-08-31.md) — No data (GovInfo API rate-limited)
 - [2026-08-24](./2026-08-24.md) — No data (GovInfo API rate-limited)
