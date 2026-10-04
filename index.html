@@ -336,6 +336,13 @@
   table.board td.q4 { background: var(--t4); }
   table.board td.q5 { background: var(--t5); }
   table.board tr.ms-row td { border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+  /* Designed in last place: quiet studio credit */
+  .lastplace-credit{display:inline-flex;align-items:center;gap:.65em;font:500 10.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:inherit;text-decoration:none}
+  .lastplace-credit-route{position:relative;width:24px;height:7px;background:radial-gradient(circle,currentColor .7px,transparent 1.2px) 0 50%/4px 4px repeat-x}
+  .lastplace-credit-route i{position:absolute;left:0;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#ff876f;transition:transform .7s cubic-bezier(.35,0,.35,1)}
+  .lastplace-credit:is(:hover,:focus-visible) .lastplace-credit-route i{transform:translateX(17px)}
+  .lastplace-credit:is(:hover,:focus-visible) span:last-child{text-decoration:underline;text-decoration-color:#ff876f;text-underline-offset:4px}
+  @media (prefers-reduced-motion:reduce){.lastplace-credit-route i{transition:none}}
 </style>
 </head>
 <body>
@@ -1430,6 +1437,7 @@
       <li><a href="https://data.cdc.gov/">NCHS — U.S. State Life Expectancy by Sex, 2021</a> (data.cdc.gov <code>it4f-frdc</code>)</li>
       <li><a href="https://catalog.data.gov/dataset">data.gov catalog</a> — 552,271 datasets at time of writing</li>
     </ul>
+    <p><a class="lastplace-credit" href="https://www.lastplace.online/?utm_source=the-blips-dont-lie&amp;utm_medium=referral&amp;utm_campaign=footer_credit" target="_blank" rel="noopener"><span class="lastplace-credit-route" aria-hidden="true"><i></i></span><span>Designed in last place</span></a></p>
   </footer>
 
 </div>
