@@ -2,6 +2,7 @@
 
 A weekly GOOD / BAD / UGLY review of new federal legislative activity, grounded in documents fetched from the GovInfo API.
 
+- [2026-10-19](./2026-10-19.md) — 3 public laws reviewed (American Music Tourism Act, Billion Dollar Boondoggle Act, Homebuyers Privacy Protection Act) + 1 committee-reported bill (Cybersecurity for Small Businesses Act of 2026); no bills passed either chamber this week.
 - [2026-10-12](./2026-10-12.md) — No data (GovInfo API rate-limited)
 - [2026-10-05](./2026-10-05.md) — 3 public laws reviewed (Miami Tribe/Illinois land-claim settlement, hydropower-relicensing reporting, Fort Peck water-system reauthorization) + 2 naming/designation acts skipped; 5 bills reviewed (Romance Scam Prevention Act, Terrorism Risk Insurance reauthorization, critical-infrastructure manufacturing study, Vicksburg NMP boundary swap, Sacramento reversionary-interest conveyance); 26 further bills skipped under the item cap.
 - [2026-09-28](./2026-09-28.md) — 7 public laws reviewed (no dateIssued fell in the strict 7-day window; see note): government-funding stopgap + extenders package, Russia/Iran sanctions act (+ unrelated tax rider), disaster-tax-relief permanence, secret-spending/OTA transparency fix, prison-staff-safety response, a two-city court-venue fix, and a single-parcel Paducah land deed release. `BILLS` collection unavailable (rate-limited).
