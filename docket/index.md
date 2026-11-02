@@ -2,6 +2,7 @@
 
 A weekly GOOD / BAD / UGLY review of new federal legislative activity, grounded in documents fetched from the GovInfo API.
 
+- [2026-11-02](./2026-11-02.md) — 5 public laws fully reviewed (Mystic Alerts Act, Southcentral Foundation Land Transfer Act, Lower Elwha Klallam Tribe Project Lands Restoration Act, License to Drill Act, Clergy Act), 1 more reviewed from metadata only (Chiricahua National Park Act) after a text fetch hit the API's rate limit; Enhancing Detection of Human Trafficking Act listed but not analyzed (summary call rate-limited); 4 previously-reviewed bills now signed into law (Romance Scam Prevention, Vicksburg NMP boundary, critical-infrastructure manufacturing, Sacramento reversionary-interest conveyance); `BILLS` collection unavailable (rate-limited).
 - [2026-10-26](./2026-10-26.md) — 1 public law fully reviewed (Social Security identity-theft single-point-of-contact), 2 more reviewed from metadata only (Crow Tribe water-rights amendments, Retire through Ownership Act) after text fetches hit the API's rate limit; Laken Riley Act and an Illegal Red Snapper/Tuna enforcement law listed but not analyzed (summary calls rate-limited); `BILLS` collection unavailable (rate-limited).
 - [2026-10-19](./2026-10-19.md) — 3 public laws reviewed (American Music Tourism Act, Billion Dollar Boondoggle Act, Homebuyers Privacy Protection Act) + 1 committee-reported bill (Cybersecurity for Small Businesses Act of 2026); no bills passed either chamber this week.
 - [2026-10-12](./2026-10-12.md) — No data (GovInfo API rate-limited)
